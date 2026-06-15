@@ -1,6 +1,7 @@
 ---
 name: Shadow Minion
 tier: l1
+location: ["General Use", "Rjocht"]
 hp: 1
 armor: false
 defense_threshold: 14
@@ -11,4 +12,4 @@ loot_drop: none
 unique_items: []
 ---
 
-Summoned by Dorogh during his boss fight (Phase 1). Appear when Dorogh is first hit. Silent, aggressive.
+Summoned by dark practitioners (Dorogh during his boss fight). Silent, aggressive. Will always look for shadows to disappear into after striking.
