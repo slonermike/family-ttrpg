@@ -5,6 +5,50 @@ Sessions are logged in reverse-chronological order (newest first).
 
 ---
 
+## 2026-06-14 — GM Tool SPA: Monster Manual & Encounter Tracker
+
+**Summary:** Built the React + TypeScript + Vite SPA from scratch. Delivered a monster manual with location grouping, collapsible sections, and filter with text highlighting, feeding into a live encounter tracker with HP tracking, armor toggling, editable labels, notes, and duplicate/remove controls. Added Zustand for state management following the SpaceLab slice pattern.
+
+### Key Changes
+
+- Scaffolded Vite + React + TypeScript project at repo root (package.json, vite.config.ts, tsconfig files, index.html, .gitignore)
+- Added Vite build-time transform plugin (`mdFrontmatter` in vite.config.ts): parses `*.md` frontmatter in Node.js via gray-matter (devDep), outputs each file as a typed JS module — solves the browser `Buffer` issue permanently and aligns with "world data parsed at build time"
+- Created `src/types/enemy.ts` — `Enemy` and `EncounterEnemy` interfaces
+- Created `src/data/enemies.ts` — 4-line loader using `import.meta.glob`
+- Created `src/components/EnemyCard.tsx` — stat badges (DEF/ATK/HP/ARMOR/RESISTS) with color-coded contrast; `filter` prop drives text highlighting
+- Created `src/components/MonsterManual.tsx` — enemies grouped by `location` field, collapsible sections (General Use open by default), filter input, highlight propagated to cards
+- Created `src/components/EncounterEntry.tsx` — interactive HP dots, armor toggle, inline editable label, notes field, duplicate/remove; `useEffect` replaced with ref callback
+- Created `src/components/EncounterView.tsx` — renders encounter list, "+ Add Enemy" opens MonsterManual as overlay
+- Created `src/store/encounterSlice.ts` — Zustand slice: encounter list, addEnemy, updateEntry, duplicateEntry, removeEntry; `useEncounter()` custom hook with `useShallow`
+- Created `src/store/appSlice.ts` — Zustand slice: view ('manual' | 'encounter'), filter string; both persist across view switches
+- Simplified `src/App.tsx` to 7 lines — reads view from store, renders component
+- Created `world/enemies/boss-dorogh-stage1.md` and `boss-dorogh-stage2.md` — stat blocks for Phase 1 (DEF 24, resists all but Insight) and Phase 2 (DEF 20, resists Agility only); location: Rjocht
+
+### Key Decisions
+
+- **Vite transform plugin over browser parsing**: gray-matter works in Node.js; the earlier approach of importing `.md` as raw strings and parsing in the browser hit Node's `Buffer` API. Build-time transform is the correct pattern — each `.md` file becomes a typed module.
+- **Multi-location support**: `location` field accepts `string | string[]`. An enemy can appear in multiple location groups. Absence of the field = General Use.
+- **Zustand slice-per-domain pattern**: Matches SpaceLab conventions exactly — separate `State` and `Actions` interfaces, `create<State & Actions>()`, exported selector functions, `useShallow` for array selectors, no prop drilling.
+- **useEffect is last resort**: One `useEffect` violation in the initial build (focus management on label input) was replaced with a ref callback (`ref={(el) => el?.focus()}`). This is now the documented standard for this project.
+- **Filter persists in store**: Filter string lives in `appSlice`, not MonsterManual local state — survives view switches.
+- **Collapsible sections open state is local**: The open/closed state of location groups is local to MonsterManual (not the store) because it's purely presentational and does not need to persist.
+- **Filter forces sections open**: When a search query is active, all matching groups display regardless of collapsed state.
+
+### Challenges
+
+- `gray-matter` uses `Buffer` (via js-yaml) which doesn't exist in the browser — hit this at first run. Resolved by moving parsing to the Vite plugin rather than polyfilling.
+- Vite 6 deprecated `as: 'raw'` in glob options in favor of `query: '?raw', import: 'default'` — caught during build, fixed before shipping.
+
+### Opportunities Identified
+
+- **Constance is not in the enemy list** — she's referenced in `boss-dorogh.md` but has no stat block. If the party can fight alongside or against her, she needs an enemy file.
+- **NPC reference viewer** is the next logical SPA feature — same Vite plugin pattern, glob `world/locations/**/*.md` and `world/npcs/*.md`
+- **Session/location context**: Could add a "current location" selector that filters the manual to only show enemies relevant to that location
+- **Encounter persistence**: Currently in-memory only (intentional). If sessions run long, consider `localStorage` via Zustand persist middleware
+- **Dev log entry**: Commit message emoji convention from SpaceLab should be adopted here too (check last 5 commits before committing)
+
+---
+
 ## 2026-06-14 — Foundation Extraction & Operating Manual
 
 **Summary:** First major working session. Extracted all canonical game data from PDFs into editable markdown source files, established the directory structure, and created the CLAUDE.md operating manual.
