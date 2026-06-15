@@ -3,10 +3,14 @@ name: Crossroads Inn
 type: tavern
 status: visited
 visited_session: 1
+region: the-reaches
+tagline: Warm, unhurried, and safe — the last friendly stop before Rjocht's shadow.
 npcs_present: [Jasper]
 connected_to: [Trading Road, Rjocht]
 scenes:
   - name: The Inn
+    type: explorable
+    tagline: Let Jasper be warm and genuinely curious — he earns trust easily, and he should.
     description: |-
       A weathered roadside tavern at the junction of two trade roads. Not glamorous. Welcoming.
 

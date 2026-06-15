@@ -57,6 +57,12 @@ export default function EnemyCard({ enemy, filter, onAdd }: Props) {
         </button>
       </div>
 
+      {enemy.description && (
+        <p className="text-sm text-gray-300 mt-2 leading-relaxed">
+          {highlight(enemy.description, filter)}
+        </p>
+      )}
+
       <div className="flex gap-2 mt-3 flex-wrap">
         <span className="inline-flex items-center gap-1.5 bg-sky-950 border border-sky-700 rounded px-2.5 py-1 text-xs">
           <span className="text-sky-400 font-bold tracking-wide">DEF</span>
@@ -97,12 +103,6 @@ export default function EnemyCard({ enemy, filter, onAdd }: Props) {
             </span>
           ))}
         </div>
-      )}
-
-      {enemy.description && (
-        <p className="text-sm text-gray-300 mt-3 leading-relaxed">
-          {highlight(enemy.description, filter)}
-        </p>
       )}
 
       {enemy.loot_drop && enemy.loot_drop !== 'none' && (

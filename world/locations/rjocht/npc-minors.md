@@ -1,5 +1,6 @@
 ---
 name: Minor NPCs
+tagline: Background characters who make the city feel alive — improvise from their brief sketches.
 role: Background characters — Rjocht
 location: rjocht
 status: active

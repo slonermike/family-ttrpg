@@ -1,3 +1,5 @@
+export type SceneType = 'explorable' | 'event' | 'combat' | 'approach'
+
 export interface PlannedEnemy {
   slug: string
   count: number
@@ -10,6 +12,8 @@ export interface PlannedEncounter {
 
 export interface Scene {
   name: string
+  type: SceneType
+  tagline: string
   description: string
   gm_notes?: string
   npcs: string[]
@@ -21,6 +25,8 @@ export interface Location {
   type: string
   status: string
   visited_session?: number
+  region: string
+  tagline: string
   description: string
   scenes: Scene[]
   slug: string

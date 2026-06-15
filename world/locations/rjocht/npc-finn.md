@@ -1,5 +1,6 @@
 ---
 name: Finn
+tagline: Treat him like a person, not a tool — that's the only trigger that works.
 role: Street Urchin
 location: rjocht/streets
 status: active

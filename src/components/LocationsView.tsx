@@ -12,7 +12,7 @@ const STATUS_BADGE: Record<string, string> = {
   'inaccessible-after-ceremony': 'bg-gray-800 text-gray-500',
 }
 
-function LocationCard({ loc, onClick }: { loc: Location; onClick: () => void }) {
+export function LocationCard({ loc, onClick }: { loc: Location; onClick: () => void }) {
   const badge = STATUS_BADGE[loc.status] ?? 'bg-gray-700 text-gray-400'
   return (
     <button
@@ -20,53 +20,75 @@ function LocationCard({ loc, onClick }: { loc: Location; onClick: () => void }) 
       className="w-full text-left bg-gray-900 rounded-xl p-4 border border-gray-800 hover:border-gray-600 transition-colors cursor-pointer"
     >
       <div className="flex items-start justify-between gap-2">
-        <div>
-          <h3 className="text-white font-bold text-base">{loc.name}</h3>
-          <p className="text-gray-500 text-xs mt-0.5 uppercase tracking-wider">{loc.type}</p>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 flex-wrap">
+            <h3 className="text-white font-bold text-base">{loc.name}</h3>
+            <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${badge}`}>
+              {loc.status.replace(/-/g, ' ')}
+            </span>
+          </div>
+          {loc.tagline && (
+            <p className="text-gray-400 text-sm mt-1 leading-snug">{loc.tagline}</p>
+          )}
+          <p className="text-gray-600 text-xs mt-1.5 uppercase tracking-wider">{loc.type}</p>
         </div>
-        <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 mt-0.5 ${badge}`}>
-          {loc.status.replace(/-/g, ' ')}
-        </span>
       </div>
-      {loc.scenes.length > 0 && (
-        <p className="text-gray-600 text-xs mt-2">
-          {loc.scenes.length} scene{loc.scenes.length !== 1 ? 's' : ''} ·{' '}
-          {loc.scenes.reduce((n, s) => n + s.npcs.length, 0)} characters
-        </p>
-      )}
     </button>
   )
 }
 
-function SceneSection({
+export function SceneSection({
   scene,
   onNpcClick,
 }: {
   scene: Scene
   onNpcClick: (npc: Npc) => void
 }) {
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
 
   const resolvedNpcs = scene.npcs
     .map((slug) => npcMap[slug])
     .filter((n): n is Npc => !!n)
 
+  const sceneTypeBadge: Record<string, string> = {
+    explorable: 'text-sky-500',
+    event: 'text-violet-400',
+    combat: 'text-red-400',
+    approach: 'text-amber-500',
+  }
+
   return (
     <section className="border border-gray-800 rounded-xl overflow-hidden">
       <button
         onClick={() => setOpen((p) => !p)}
-        className="w-full flex items-center justify-between px-4 py-3 bg-gray-900 hover:bg-gray-850 cursor-pointer"
+        className="w-full flex items-start justify-between px-4 py-3 bg-gray-900 hover:bg-gray-850 cursor-pointer text-left"
       >
-        <h3 className="text-gray-200 font-bold text-sm tracking-wide">{scene.name}</h3>
-        <span className={`text-gray-500 text-xs transition-transform ${open ? '' : '-rotate-90'}`}>
+        <div className="flex-1 min-w-0 pr-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            <h3 className="text-gray-200 font-bold text-sm tracking-wide">{scene.name}</h3>
+            {scene.type && (
+              <span className={`text-xs font-medium uppercase tracking-wider ${sceneTypeBadge[scene.type] ?? 'text-gray-500'}`}>
+                {scene.type}
+              </span>
+            )}
+          </div>
+          {scene.tagline && !open && (
+            <p className="text-gray-500 text-xs mt-0.5 leading-snug">{scene.tagline}</p>
+          )}
+        </div>
+        <span className={`text-gray-500 text-xs transition-transform shrink-0 mt-0.5 ${open ? '' : '-rotate-90'}`}>
           ▼
         </span>
       </button>
 
       {open && (
         <div className="px-4 pb-4 pt-3 bg-gray-950 space-y-3">
+          {scene.tagline && (
+            <p className="text-amber-400/80 text-sm italic leading-snug">{scene.tagline}</p>
+          )}
+
           {scene.description && (
-            <MarkdownBody className="prose prose-invert prose-sm max-w-none prose-p:text-gray-400 prose-p:my-1 prose-strong:text-gray-200 prose-em:text-gray-400 prose-blockquote:not-italic prose-blockquote:border-0 prose-blockquote:p-0">
+            <MarkdownBody className="prose-p:text-gray-400 prose-strong:text-gray-200 prose-em:text-gray-400">
               {scene.description}
             </MarkdownBody>
           )}
@@ -74,7 +96,7 @@ function SceneSection({
           {scene.gm_notes && (
             <div className="border-l-2 border-amber-900 pl-3 mt-3">
               <p className="text-xs text-amber-700 uppercase tracking-widest mb-1.5 font-medium">GM</p>
-              <MarkdownBody className="prose prose-invert prose-sm max-w-none prose-p:text-amber-200/60 prose-p:my-1 prose-strong:text-amber-200/80 prose-em:text-amber-200/60 prose-li:text-amber-200/60 prose-blockquote:not-italic prose-blockquote:border-0 prose-blockquote:p-0">
+              <MarkdownBody className="prose-p:text-amber-200/60 prose-strong:text-amber-200/80 prose-em:text-amber-200/60 prose-li:text-amber-200/60">
                 {scene.gm_notes}
               </MarkdownBody>
             </div>
@@ -118,7 +140,15 @@ function SceneSection({
   )
 }
 
-function LocationDetail({ loc, onBack }: { loc: Location; onBack: () => void }) {
+export function LocationDetail({
+  loc,
+  onBack,
+  backLabel = 'Locations',
+}: {
+  loc: Location
+  onBack: () => void
+  backLabel?: string
+}) {
   const [activeNpc, setActiveNpc] = useState<Npc | null>(null)
 
   return (
@@ -128,17 +158,14 @@ function LocationDetail({ loc, onBack }: { loc: Location; onBack: () => void }) 
           onClick={onBack}
           className="text-amber-500 hover:text-amber-400 text-sm font-medium shrink-0 cursor-pointer"
         >
-          ← Locations
+          ← {backLabel}
         </button>
         <h1 className="text-white font-bold text-xl">{loc.name}</h1>
       </header>
 
-      {loc.description && (
-        <div className="mx-4 mt-4 border-l-2 border-amber-900 pl-4">
-          <p className="text-xs text-amber-700 uppercase tracking-widest mb-2 font-medium">GM Overview</p>
-          <MarkdownBody className="prose prose-invert prose-sm max-w-none prose-p:text-gray-400 prose-p:my-1 prose-strong:text-gray-200 prose-headings:text-gray-300 prose-blockquote:not-italic prose-blockquote:border-0 prose-blockquote:p-0">
-            {loc.description}
-          </MarkdownBody>
+      {loc.tagline && (
+        <div className="px-4 pt-4 pb-0">
+          <p className="text-amber-400/80 text-sm italic leading-snug">{loc.tagline}</p>
         </div>
       )}
 
@@ -147,6 +174,15 @@ function LocationDetail({ loc, onBack }: { loc: Location; onBack: () => void }) 
           <SceneSection key={scene.name} scene={scene} onNpcClick={setActiveNpc} />
         ))}
       </div>
+
+      {loc.description && (
+        <div className="mx-4 mb-4 border-l-2 border-gray-700 pl-4">
+          <p className="text-xs text-gray-500 uppercase tracking-widest mb-2 font-medium">Overview</p>
+          <MarkdownBody className="prose-p:text-gray-400 prose-strong:text-gray-300 prose-headings:text-gray-400">
+            {loc.description}
+          </MarkdownBody>
+        </div>
+      )}
 
       {activeNpc && <NpcOverlay npc={activeNpc} onClose={() => setActiveNpc(null)} />}
     </div>

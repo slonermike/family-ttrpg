@@ -3,10 +3,14 @@ name: The Hidden Grove
 type: sacred-ground
 status: inaccessible-after-ceremony
 visited_session: 1
+region: the-reaches
+tagline: The opening ceremony — slow it down, give it weight, and let the Blade find its bearer.
 npcs_present: [Elder Greymane]
 connected_to: [Trading Road]
 scenes:
   - name: The Ceremony Ground
+    type: event
+    tagline: Slow it down — this is the moment the Blade finds its bearer; give every ability card its weight.
     description: |-
       Ancient forest deep enough that the sky disappears. Branches interlock overhead like a cathedral ceiling. Light filters through — not sunlight exactly, something older and warmer.
 

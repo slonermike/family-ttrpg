@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-export type View = 'manual' | 'encounter' | 'locations'
+export type View = 'manual' | 'encounter' | 'locations' | 'regions'
 
 interface AppState {
   view: View
@@ -13,7 +13,7 @@ interface AppActions {
 }
 
 export const useAppStore = create<AppState & AppActions>()((set) => ({
-  view: 'manual',
+  view: 'regions',
   filter: '',
   setView: (view) => set({ view }),
   setFilter: (filter) => set({ filter }),

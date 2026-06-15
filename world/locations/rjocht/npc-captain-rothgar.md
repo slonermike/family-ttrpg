@@ -1,5 +1,6 @@
 ---
 name: Captain Rothgar
+tagline: The most dangerous person in Rjocht — competent, not Corrupted, and his conscience isn't fully dead.
 role: Guard Captain (conflicted)
 location: rjocht/keep-perimeter
 status: active

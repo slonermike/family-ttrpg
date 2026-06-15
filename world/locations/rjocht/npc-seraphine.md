@@ -1,5 +1,6 @@
 ---
 name: Seraphine
+tagline: She recognized the Blade immediately and knows things she shouldn't — she trades information for something interesting.
 role: Fortune Teller
 location: rjocht/market-district
 status: active

@@ -3,10 +3,14 @@ name: Rjocht
 type: fortress-city
 status: occupied-by-Dorogh
 visited_session: 1
+region: the-reaches
+tagline: A city that forgot what color looks like — every NPC is a window into what was lost.
 npcs_present: [Jorik, Merra, Finn, Brother Aldric, Captain Rothgar, Seraphine, Margrave, Constance, Tam, Beren]
 connected_to: [Trading Road, Crossroads Inn, Dorogh Keep]
 scenes:
   - name: East Market Gate
+    type: approach
+    tagline: Two exhausted guards who don't want trouble — find the human thread and they crack.
     description: |-
       The traders' gate. Two guards, a worn booth, a list of permitted goods on a board no one reads anymore.
 
@@ -21,7 +25,28 @@ scenes:
       If combat starts here, it takes one round before a runner goes to the Market District patrol.
     npcs: [tam, beren]
 
+  - name: Eastern District
+    type: explorable
+    tagline: The first choice — Jorik's hammer ahead, the market's noise to the west; let the party decide.
+    description: |-
+      The gate closes behind them. The street ahead is narrow — older stone, quieter. The eastern district.
+
+      > You're inside. The gate closes behind you. The street ahead is narrow — older stone, less foot traffic than you expected. To the west you can already hear it: cart wheels, flat voices, the thud of crates being stacked. The market. But ahead, closer, there's something else. A hammer ringing. Metal on metal, steady and unhurried. Someone is still working.
+    gm_notes: |-
+      **The fork.** Two paths from here — let them choose, don't push.
+
+      **Follow the hammer (Jorik):** Quieter. Safer. He's an ally, he won't ask questions, and he carries everything the party needs to understand the human cost of what's happening in this city. Good first stop if they want to regroup before wading into the market.
+
+      **Head toward the noise (Market District):** More exposed. More NPCs. More information available, but also more guards. Merra, Finn, Seraphine, Margrave — all of them are there.
+
+      **Jorik** is a safe return point at any time. If the party needs to rest or pass information, he's where they come back to.
+
+      When Jorik speaks, slow down. Give his words space. He doesn't give tactical information — he gives human cost information. What the city used to be. Who the people are. What's been lost.
+    npcs: [jorik]
+
   - name: Market District
+    type: explorable
+    tagline: A city that forgot what color looks like — every NPC here is a window into what was lost.
     description: |-
       The heart of the city, hollowed out. Stalls with permitted goods only — plain food, plain clay pots. No color. No decoration. *Beauty has been declared a form of rebellion.*
 
@@ -38,22 +63,9 @@ scenes:
       **Margrave** knows more than he lets on and will sell information if he thinks there's something in it for him. His pride is the lever.
     npcs: [merra, finn, brother-aldric, seraphine, margrave, minors]
 
-  - name: Eastern District
-    description: |-
-      Near the inner wall — quieter, fewer guards. The streets are narrower here, older.
-
-      > The streets get quieter as you move east. Narrower. Less foot traffic, less noise from the patrols. Somewhere ahead you can hear a hammer ringing — metal on metal, steady and unhurried. Someone is still working.
-    gm_notes: |-
-      **Jorik** is a safe return point. If the party needs to rest, regroup, or pass information, he's the place.
-
-      He gave the party a Healing Potion in session 1 without asking for anything. He may have more. He doesn't ask questions.
-
-      He does not give tactical information. He gives human cost information — what the city used to be, who the people are, what's been lost. That's what he carries.
-
-      When Jorik speaks, slow down. Give his words space.
-    npcs: [jorik]
-
   - name: Dorogh's Keep
+    type: combat
+    tagline: The endgame — don't engage until Constance's intel is in hand and the party is at full strength.
     description: |-
       Heavy iron-banded doors flanked by Corrupted Guards. Cold inside — torches that pull shadows rather than push them. Stone stairs lead up to the throne room. The basement entrance is to the left of the main doors.
 

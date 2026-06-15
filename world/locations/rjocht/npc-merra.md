@@ -1,5 +1,6 @@
 ---
 name: Merra
+tagline: She knows everyone's name and has things tucked away — kindness is the only key that works.
 role: Herb Seller
 location: rjocht/market-district
 status: active

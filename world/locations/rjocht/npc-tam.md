@@ -1,5 +1,6 @@
 ---
 name: Tam
+tagline: Young, scared, and not the enemy — find a human thread and he cracks.
 role: Gate Guard, East Market Gate
 location: rjocht/east-market-gate
 status: active

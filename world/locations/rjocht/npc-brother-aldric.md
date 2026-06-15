@@ -1,5 +1,6 @@
 ---
 name: Brother Aldric
+tagline: Not a source of information; a source of stillness before hard things.
 role: Wandering Cleric / Keeper of the Old Prayers
 location: rjocht/market-district
 status: active

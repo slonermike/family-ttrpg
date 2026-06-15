@@ -1,5 +1,6 @@
 ---
 name: Margrave
+tagline: Play to his ego — he'll do almost anything if properly flattered, and he's funnier for it.
 role: Merchant (prominent, self-important)
 location: rjocht/market-district
 status: active

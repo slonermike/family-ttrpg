@@ -1,5 +1,6 @@
 export interface Npc {
   name: string
+  tagline: string
   role: string
   location: string
   status: string

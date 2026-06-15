@@ -1,5 +1,6 @@
 ---
 name: Jasper
+tagline: A road merchant who finds everything interesting — warm, useful, and Joy is returning to him.
 role: Traveling Merchant
 location: crossroads-inn
 status: active

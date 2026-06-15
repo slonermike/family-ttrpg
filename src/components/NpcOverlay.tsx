@@ -37,7 +37,9 @@ export default function NpcOverlay({ npc, onClose }: Props) {
         <div className="flex items-start justify-between px-5 pt-5 pb-3 border-b border-gray-800">
           <div>
             <h2 className="text-white font-bold text-xl leading-tight">{npc.name}</h2>
-            <p className="text-gray-400 text-sm mt-0.5">{npc.role}</p>
+            {npc.tagline && (
+              <p className="text-amber-400/80 text-sm italic mt-0.5 leading-snug">{npc.tagline}</p>
+            )}
           </div>
           <button
             onClick={onClose}
@@ -48,16 +50,6 @@ export default function NpcOverlay({ npc, onClose }: Props) {
         </div>
 
         <div className="overflow-y-auto flex-1 px-5 py-4 space-y-4">
-          <div className="flex flex-wrap gap-3 text-sm">
-            <span className={`font-medium ${statusColor}`}>{npc.status}</span>
-            {npc.fruit && (
-              <span className="text-amber-300">
-                <span className="text-gray-600 mr-1">fruit</span>
-                {npc.fruit}
-              </span>
-            )}
-          </div>
-
           {npc.voice && (
             <div className="bg-gray-800 rounded-lg px-4 py-3">
               <p className="text-xs text-gray-500 uppercase tracking-widest mb-1">Voice</p>
@@ -66,10 +58,23 @@ export default function NpcOverlay({ npc, onClose }: Props) {
           )}
 
           {npc.description && (
-            <MarkdownBody className="prose prose-invert prose-sm max-w-none prose-p:text-gray-300 prose-headings:text-gray-100 prose-strong:text-gray-100 prose-em:text-gray-300 prose-li:text-gray-300 prose-blockquote:not-italic prose-blockquote:border-0 prose-blockquote:p-0">
+            <MarkdownBody className="prose-p:text-gray-300 prose-headings:text-gray-100 prose-strong:text-gray-100 prose-em:text-gray-300 prose-li:text-gray-300">
               {npc.description}
             </MarkdownBody>
           )}
+
+          <div className="flex flex-wrap gap-3 text-sm pt-1 border-t border-gray-800">
+            <span className={`font-medium ${statusColor}`}>{npc.status}</span>
+            {npc.role && (
+              <span className="text-gray-500">{npc.role}</span>
+            )}
+            {npc.fruit && (
+              <span className="text-amber-300">
+                <span className="text-gray-600 mr-1">fruit</span>
+                {npc.fruit}
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 ---
 name: Beren
+tagline: Not cruel, just worn smooth — follow Tam's lead and he won't fight it.
 role: Gate Guard, East Market Gate
 location: rjocht/east-market-gate
 status: active

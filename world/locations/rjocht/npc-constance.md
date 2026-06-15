@@ -1,5 +1,6 @@
 ---
 name: Constance
+tagline: She's been waiting for someone carrying that Blade — she has intelligence Dorogh doesn't know she has.
 role: Imprisoned Captain of the City Guard
 location: rjocht/dorogh-keep-basement
 status: imprisoned
