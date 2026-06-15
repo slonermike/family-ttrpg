@@ -3,7 +3,7 @@ name: Seraphine
 role: Fortune Teller
 location: rjocht/market-district
 status: active
-fruit: null — Flesh: Selfish Ambition
+fruit: "null — Flesh: Selfish Ambition"
 voice: "Esmeralda meets Trelawney — theatrical mysticism with genuine flashes underneath"
 first_appeared: scene_prep
 relationships:

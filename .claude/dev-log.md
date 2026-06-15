@@ -5,6 +5,48 @@ Sessions are logged in reverse-chronological order (newest first).
 
 ---
 
+## 2026-06-14 — GM Tool SPA: Locations View & NPC Reference
+
+**Summary:** Added a Locations tab to the GM Tool SPA. Location folders drive the grouping; each location's `index.md` defines scenes via frontmatter, each scene lists NPC slugs. Tapping an NPC chip opens a full-screen overlay with the NPC's markdown rendered. Established a blockquote convention for narration (text the GM speaks aloud), rendered as a distinct callout box. Installed `react-markdown` and `@tailwindcss/typography`.
+
+### Key Changes
+
+- Added `scenes` frontmatter to all three `world/locations/*/index.md` files — each scene has `name`, `description` (player-facing + narration), `gm_notes` (private GM info), `npcs` (slug list), and optional `encounters` (future one-click combat setup)
+- Added frontmatter to `world/locations/rjocht/npc-minors.md` (was prose-only, broke the loader)
+- Fixed YAML parse errors in 5 NPC files where `fruit: null — Flesh: ...` used an unquoted em dash — now quoted strings
+- Created `src/types/npc.ts` and `src/types/location.ts` — full type definitions including `PlannedEncounter`/`PlannedEnemy` stubs for future one-click encounter launch
+- Created `src/data/npcs.ts` — builds a global `npcMap` from two globs: `world/locations/**/npc-*.md` and `world/npcs/*.md`; transcendent NPCs (Elder Greymane) resolve correctly even when referenced from a different location's scene
+- Created `src/data/locations.ts` — loads `world/locations/*/index.md`, derives slug from folder name, sorts visited locations first
+- Created `src/components/MarkdownBody.tsx` — shared ReactMarkdown wrapper; overrides blockquote rendering with a "Narration" callout (slate bg, sky border, italic text); used everywhere markdown is rendered
+- Created `src/components/NpcOverlay.tsx` — slide-up sheet over a dimmed backdrop; shows name, role, status, fruit, voice callout, full markdown body; closes on Escape or backdrop tap
+- Created `src/components/LocationsView.tsx` — location card list → location detail (GM Overview from body + collapsible scene sections); each scene shows description, GM notes (amber left-border treatment), NPC chips, and encounter stubs
+- Updated `src/store/appSlice.ts` — added `'locations'` to `View` type
+- Updated `src/App.tsx` — added two-tab bottom nav (Monsters / Locations); encounter view still accessed via FAB from Monster Manual, full-screens without tab bar
+
+### Key Decisions
+
+- **File structure is source of truth for locations**: folder = location slug, `index.md` defines scenes. No separate config file needed.
+- **Global NPC map from two sources**: NPCs live in `world/locations/**/` (location-specific) or `world/npcs/` (transcendent). Both are merged into one map at build time. Scene frontmatter references slugs (`elder-greymane`) and the map resolves them regardless of source path.
+- **Blockquote = narration convention**: `>` in any markdown field (description, gm_notes, NPC body) renders as a distinct "Narration" callout — the GM's words to players. Plain prose = GM reference/context. Keeps the two modes visually separated at a glance.
+- **Scene `description` vs `gm_notes`**: `description` is orientation + spoken narration. `gm_notes` is private — NPC levers, mechanical notes, what's really in motion. Amber left-border visually separates GM-only content.
+- **`encounters` on scenes are data-only for now**: `PlannedEncounter` and `PlannedEnemy` types exist, the frontmatter is written (e.g., Keep Entrance: 2× corrupted-guard), and the stubs render as text labels. One-click launch will connect to existing `addEnemy` in encounterSlice when that feature is ready.
+- **Encounter tab is not a top-level tab**: Encounter view is transient/working state, not a primary destination. Keeping it FAB-accessed from Monster Manual matches the existing UX and avoids over-promoting a view the GM doesn't need until combat starts.
+
+### Challenges
+
+- `@tailwindcss/typography` was not installed — `prose` classes did nothing, markdown rendered as flat unstyled text. Installed the plugin and registered it via `@plugin "@tailwindcss/typography"` in `index.css` (Tailwind v4 CSS-first config).
+- 5 NPC files had YAML-invalid em dashes in the `fruit` field (`null — Flesh: X`). These were latent bugs the new glob loader surfaced. All quoted.
+
+### Opportunities Identified
+
+- **One-click encounter launch from scenes**: Data is in place. Need a button in `SceneSection` that calls `addEnemy` for each `PlannedEnemy` in the scene's `encounters` array and switches view to `'encounter'`.
+- **Encounter slugs need normalization**: `PlannedEnemy.slug` references enemy file names (e.g., `corrupted-guard`) but `enemies.ts` loads by display name. Need a slug field on `Enemy` or a lookup map before launch can work.
+- **Boss Dorogh is not in the NPC or enemy reference**: `boss-dorogh.md` lives in `world/locations/rjocht/` but is neither a `npc-*.md` nor in `world/enemies/`. It won't appear in either view. Decide: add to locations as a `boss-*.md` glob, or move to `world/enemies/`.
+- **NPC overlay is read-only**: Could add a "status" toggle (active → imprisoned → dead) that persists in session state. Useful during play.
+- **Location status is static**: The `status` field on locations (e.g., `occupied-by-Dorogh`) could change mid-campaign. No update mechanism yet.
+
+---
+
 ## 2026-06-14 — GM Tool SPA: Monster Manual & Encounter Tracker
 
 **Summary:** Built the React + TypeScript + Vite SPA from scratch. Delivered a monster manual with location grouping, collapsible sections, and filter with text highlighting, feeding into a live encounter tracker with HP tracking, armor toggling, editable labels, notes, and duplicate/remove controls. Added Zustand for state management following the SpaceLab slice pattern.

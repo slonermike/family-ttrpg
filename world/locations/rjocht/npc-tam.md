@@ -3,7 +3,7 @@ name: Tam
 role: Gate Guard, East Market Gate
 location: rjocht/east-market-gate
 status: active
-fruit: null — Fear / Despair (not malicious, just crushed)
+fruit: "null — Fear / Despair (not malicious, just crushed)"
 voice: "Young, nervous; speaks in starts and stops; apologizes for things that aren't his fault"
 first_appeared: scene_4
 relationships:

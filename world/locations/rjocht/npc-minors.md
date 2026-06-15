@@ -1,3 +1,12 @@
+---
+name: Minor NPCs
+role: Background characters — Rjocht
+location: rjocht
+status: active
+fruit: Various
+voice: Varies
+---
+
 # Minor NPCs — Rjocht
 
 Brief reference for named background characters. Flesh out as needed during prep.

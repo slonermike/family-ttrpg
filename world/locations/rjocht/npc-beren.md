@@ -3,7 +3,7 @@ name: Beren
 role: Gate Guard, East Market Gate
 location: rjocht/east-market-gate
 status: active
-fruit: null — Resigned Faithlessness (too tired for malice or courage)
+fruit: "null — Resigned Faithlessness (too tired for malice or courage)"
 voice: "Older, flat, economical; has been tired for years; no energy for cruelty or for help"
 first_appeared: scene_4
 relationships:

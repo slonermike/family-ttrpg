@@ -3,7 +3,7 @@ name: Margrave
 role: Merchant (prominent, self-important)
 location: rjocht/market-district
 status: active
-fruit: null — Flesh: Pride / Boastfulness
+fruit: "null — Flesh: Pride / Boastfulness"
 voice: "Gaston — confident, charming, slightly ridiculous; never wrong, never small"
 first_appeared: session_1
 relationships:

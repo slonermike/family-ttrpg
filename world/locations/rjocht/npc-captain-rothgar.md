@@ -3,7 +3,7 @@ name: Captain Rothgar
 role: Guard Captain (conflicted)
 location: rjocht/keep-perimeter
 status: active
-fruit: null — Flesh: Envy / Fear of Man
+fruit: "null — Flesh: Envy / Fear of Man"
 voice: "Javert — rigid, duty-bound, but conscience is not fully dead"
 first_appeared: scene_prep
 relationships:

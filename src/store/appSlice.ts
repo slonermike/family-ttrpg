@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-export type View = 'manual' | 'encounter'
+export type View = 'manual' | 'encounter' | 'locations'
 
 interface AppState {
   view: View
