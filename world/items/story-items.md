@@ -36,14 +36,26 @@ Unique items with narrative significance. Given by the GM at specific story mome
 
 ---
 
+## Jorik's Blessing
+
+*A small iron disc on a cord. Hammer-over-anvil, pressed clean. His maker's mark.*
+
+**Lore:** Jorik's personal maker token — the mark he pressed into everything he built in Rjocht. He gave it to the party when they left his forge, without ceremony. It opens doors in the eastern district. People know what that mark means. Lisel knows it on sight.
+
+**Given to:** The party by Jorik when they leave his forge — he stops them at the door and presses it into their hands without ceremony.
+
+**Use when:** Establishing trust with anyone who knew Jorik or his work — traders, old contacts on the road, the people of Amber Hollow. Lisel recognizes it from across a firelit yard and stops cold.
+
+**Current Holder:** Not yet given (party has not reached Jorik)
+
+---
+
 ## Merchant's ID
 
 *An official-looking document bearing a merchant's seal and credentials.*
 
-**Acquired:** Session 1 — likely from the Margrave/marketplace encounter in Rjocht.
+**Acquired:** Session 1 — from the outer market outside Rjocht's walls. A traveling market run by and for non-citizens; no entry to the city required.
 
 **Use when:** Presenting credentials as a trader, bypassing checkpoints, or establishing legitimacy in commercial contexts.
-
-**Details TBD** — exact mechanics and acquisition circumstances to be confirmed.
 
 **Current Holder:** MuhDude (player: Joey)

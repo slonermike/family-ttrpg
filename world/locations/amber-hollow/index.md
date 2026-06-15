@@ -50,6 +50,38 @@ scenes:
     npcs:
       - lisel
 
+  - name: Over the Ridge
+    type: event
+    tagline: Bren bolts the moment he sees you — follow him over the ridge and you'll understand why.
+    description: |
+      > [!NARRATION]
+      > He's foraging when you come out. Crouched low on the hillside, a few yards from the cave entrance. He hears you — or smells the cold air that comes with you — and he goes bolt upright.
+
+      > [!NARRATION]
+      > He doesn't say anything. He just runs.
+
+      > [!NARRATION]
+      > You follow him up over the ridge. He's slowing by the time you crest it — not because he's tired. Because he can see the meadow below.
+
+      > [!NARRATION]
+      > Jorik is down there. He's got a child hanging upside down by one ankle, laughing, a small two-wheeled cart tucked under his other arm. He's carrying both of them back up the hill. The child is covered in mud and completely fine.
+
+      > [!NARRATION]
+      > You watch Bren's shoulders drop.
+
+    gm_notes: |
+      Bren has known about the cave since he found it. He's never told his daughter exactly what's up there — just that she shouldn't go near the ridge. Kids and "shouldn't" have a complicated relationship. When the party comes out of that cave, his brain goes straight to her.
+
+      The run is pure reflex. He's not panicking — he just needs to see her.
+
+      Play the meadow scene slowly. Let the party take it in from the ridge before anyone speaks. Jorik doesn't see them yet. The granddaughter is laughing, mud-covered, already wanting to go back up the hill. Bren watches from above for a moment before he heads down.
+
+      **Clover.** Lisel and Bren's daughter. Jorik doesn't know her name yet — he doesn't know she exists.
+
+      This is the exhale. The party just came out of something cold and old and wrong, and the first thing they see is Jorik swinging his granddaughter upside down. Give it the space it deserves.
+    npcs:
+      - bren
+
   - name: Amber Hollow
     type: explorable
     tagline: Rocky ground, worn tools, cold off the western ridge — but warmth coming in from the east, and people who've decided that's enough to keep going.

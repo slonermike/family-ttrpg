@@ -8,7 +8,7 @@ fruit: Faithfulness / Goodness
 voice: "Hagrid — warm, big, gentle giant energy; speaks simply, means everything he says"
 first_appeared: session_1
 relationships:
-  - party: Ally; gave Healing Potion, Dorogh intel, and his maker token in session 1
+  - party: Ally; gives Healing Potion, Dorogh intel, and his maker token when they visit the forge
   - Jasper: Known to each other via the trade road; Jorik mentioned Jasper by name
   - Lisel: Daughter; left for the western reaches two years before session 1; now in Amber Hollow
   - maker token: Iron disc on a cord, hammer-over-anvil; given to the party in session 1; Lisel recognizes it on sight
@@ -151,4 +151,4 @@ He can serve as a safe return point inside Rjocht if the party needs a place to 
 
 **PDF note:** The scene 2 PDF draft used the name "Kael." Jorik is canon — confirmed in session 1 debrief.
 
-**Thread — he's a grandfather and doesn't know it.** Lisel and Bren have a daughter. Jorik has no idea. When the party discovers this — and whether they tell him — that's a full scene worth building toward.
+**Thread — he's a grandfather and doesn't know it.** Lisel and Bren have a daughter named Clover. Jorik has no idea. When the party discovers this — and whether they tell him — that's a full scene worth building toward.

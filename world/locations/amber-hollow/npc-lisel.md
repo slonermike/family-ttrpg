@@ -104,7 +104,7 @@ Lisel is a grace note, not a quest giver. Don't load her with missions. Her role
 
 **Jorik's arrival:** When the party brings word that Rjocht is free and Jorik lives, Lisel sends word back through road contacts. Jorik gets the message, sells the forge, and walks west with a portable forge setup — tools shaped for hard ground. His arrival, combined with sealing the cave, is what tips the Hollow from surviving to flourishing.
 
-**Thread — she has a daughter.** Jorik doesn't know he's a grandfather. Her daughter is young — born in the Hollow. If the party spends time here, they'll encounter her. Whether they carry that news back to Jorik is theirs to decide.
+**Thread — she has a daughter named Clover.** Jorik doesn't know he's a grandfather. Clover was born in the Hollow — she's never known anything else. If the party spends time here, they'll encounter her. Whether they carry that news back to Jorik is theirs to decide.
 :::
 
 :::details[Session 8 Callback]

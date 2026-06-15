@@ -6,7 +6,7 @@
 
 - **The western ridge cavern** — Bren found it foraging; hasn't gone back. Icy air from below, not from the weather. Beautiful carved symbols all around the entrance — old, careful, wrong. Threshold to the next tool of justice. Needs a name. Build it out as a location.
 - **Jorik's arrival at Amber Hollow** — After the party brings word that Rjocht is free and Lisel lives, she sends word east. Jorik sells the forge, walks west with a cart and a portable forge setup. He arrives at Amber Hollow with tools for hard ground and meets his granddaughter for the first time.
-- **Lisel and Bren's daughter** — Young, born in the Hollow, unnamed. Jorik doesn't know she exists. The party will encounter her when they spend time at Amber Hollow. Whether they tell Jorik is their choice.
+- **Clover** — Lisel and Bren's daughter, born in the Hollow, named for a wildflower. Jorik doesn't know she exists. The party will encounter her when they spend time at Amber Hollow. Whether they tell Jorik is their choice.
 - **The Greening** — Amber Hollow sits between cold from the west (the cavern) and warmth from the east (the fog breaking). The land is waking slowly. When the cave is sealed and Jorik arrives with proper tools, the Hollow tips from surviving to flourishing. That's the payoff.
 
 ---
