@@ -59,3 +59,15 @@ Unique items with narrative significance. Given by the GM at specific story mome
 **Use when:** Presenting credentials as a trader, bypassing checkpoints, or establishing legitimacy in commercial contexts.
 
 **Current Holder:** MuhDude (player: Joey)
+
+---
+
+## Pineapple Scepter
+
+*A scepter made of actual pineapple, lacquered and studded with tiny gems. It smells amazing. It has no business being this dignified.*
+
+**Acquired:** Given by Elder Thornspike of the Pineapple Tribe — only if the party (or at least one member) arrives wearing a giant pineapple costume.
+
+**Once per battle:** The bearer hurls a magical fruit at any ally with a clear shot. That ally restores 1 hit point (flip one ability card face-up).
+
+**Current Holder:** Unclaimed
