@@ -94,7 +94,7 @@ scenes:
     gm_notes: |
       The Hollow sits in a valley that gets warmth from the east and cold from the western ridge. The cold is not natural — it's the cavern, bleeding into the land. The warmth is: the fog breaking, the world waking up. They're caught between the two.
 
-      The soil is cold and rocky from the ridge. Two years of farming with tools brought from Rjocht, never replaced. The same axe, the same plow blades. It works. Barely.
+      The soil is cold and rocky from the ridge. Years of farming with tools brought from Rjocht, never replaced. The same axe, the same plow blades. It works. Barely.
 
       **What Jorik's arrival means:** When Jorik comes — after the party brings news of Lisel, after he sells the forge and walks west — he brings a portable forge setup. Basic. But enough. Proper plow blades for this specific ground. Hoes that don't snap. Tools shaped for the work, not borrowed from another life. The Hollow has been surviving. With proper tools and the cave sealed, it will flourish.
     npcs:
@@ -102,7 +102,7 @@ scenes:
       - bren
 ---
 
-Amber Hollow sits in a fold of the western reaches, hidden enough to be left alone and open enough to grow. It was founded two years before session 1 by Lisel and four friends who left Rjocht before things fully turned. They stopped to rest here and couldn't find a good reason to leave. Thirty people call it home now.
+Amber Hollow sits in a fold of the western reaches, hidden enough to be left alone and open enough to grow. It was founded years before session 1 by Lisel and four friends who left Rjocht before things fully turned. They stopped to rest here and couldn't find a good reason to leave. Thirty people call it home now.
 
 The land is difficult — cold, rocky, stingy with rain. Every harvest has been earned. This season's yield is the best they've managed here, and they're celebrating it like a miracle, because for them it is.
 

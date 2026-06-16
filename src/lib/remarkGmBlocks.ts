@@ -55,6 +55,15 @@ function processBlockquote(node: any) {
   }
 }
 
+function processInlineDirective(node: any) {
+  if (node.name !== 'npc' && node.name !== 'enemy') return
+  const slug = node.children?.map((c: any) => c.value ?? '').join('').trim() ?? ''
+  if (!slug) return
+  node.data = node.data || {}
+  node.data.hName = node.name === 'npc' ? 'npc-pill' : 'enemy-pill'
+  node.data.hProperties = { slug }
+}
+
 function processDetailsDirective(node: any) {
   // remark-directive puts [Label] content in a directiveLabel child node
   const labelNode = node.children?.find((c: any) => c.data?.directiveLabel)
@@ -85,6 +94,7 @@ export function remarkGmBlocks() {
         if (node.type === 'containerDirective' && node.name === 'details') {
           processDetailsDirective(node)
         }
+        if (node.type === 'inlineDirective') processInlineDirective(node)
         if (node.children?.length) walk(node.children)
       }
     }

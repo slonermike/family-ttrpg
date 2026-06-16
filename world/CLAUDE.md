@@ -16,11 +16,13 @@ When world state changes (NPC freed, item used, location visited, lore revealed)
 
 ## File Naming
 
-- `npc-[name].md` — NPC files (location-specific or in `world/npcs/` for transcendent)
-- `enemy-l[tier]-[name].md` — generic/reusable enemies (l1 = weakest, l2 = mid, boss = boss)
-- `boss-[name].md` — bosses and mini-bosses (location-anchored)
+- `world/npcs/npc-[name].md` — ALL NPC files live here; slug = filename minus `npc-` prefix and `.md`
+- `world/enemies/enemy-l[tier]-[name].md` — generic/reusable enemies (l1 = weakest, l2 = mid)
+- `world/enemies/boss-[name].md` — bosses (slug strips `boss-` prefix)
 - `world/regions/[slug]/index.md` — region files
 - `world/locations/[slug]/index.md` — location files
+
+Enemy slugs are derived from filename: `enemy-l2-corrupted-guard.md` → `l2-corrupted-guard`; `boss-dorogh-stage1.md` → `dorogh-stage1`.
 
 ---
 
@@ -72,13 +74,15 @@ scenes:
             count: number
 ```
 
-### NPC (`npc-[name].md`)
+### NPC (`world/npcs/npc-[name].md`)
+
+NPCs are first-class world entities — not nested under locations. To move an NPC (e.g. Jorik relocates to Amber Hollow), update the `location` field in their file. The slug stays the same; all scene `npcs: [slug]` references keep working.
 
 ```yaml
 name: string
 tagline: string          # one sentence; how to use this NPC right now
 role: string
-location: string         # e.g. rjocht/eastern-district
+location: string         # current location slug (e.g. rjocht, amber-hollow); update when NPC moves
 status: active | imprisoned | dead | missing
 fruit: string            # Fruit of the Spirit or Flesh (e.g. Faithfulness / Goodness)
 voice: string            # voice casting direction (e.g. "Hagrid — warm, gentle giant")
@@ -157,3 +161,23 @@ He arrived in Rjocht three years before the fog came down.
 ```
 
 Narration and dialog blocks inside a `:::details` section work normally. The section can hold any number of paragraphs, blockquotes, or nested sections.
+
+---
+
+## Inline Slug References
+
+Use inline directives to reference NPCs or enemies anywhere in markdown. The SPA renders them as clickable pills that open an overlay.
+
+**NPC pill** — opens the NPC overlay:
+```
+Talk to :npc[jorik] before heading to the keep.
+```
+
+**Enemy pill** — opens the enemy overlay (with "Add to Encounter" button):
+```
+Two :enemy[l2-corrupted-guard] flank the entrance.
+```
+
+Slugs match the filenames: `npc-jorik.md` → `jorik`; `enemy-l2-corrupted-guard.md` → `l2-corrupted-guard`; `boss-dorogh-stage1.md` → `dorogh-stage1`.
+
+These work in any markdown field: `description`, `gm_notes`, NPC body text, region/location body text.

@@ -1,4 +1,5 @@
 export interface Enemy {
+  slug: string
   name: string
   tier: 'l1' | 'l2' | 'boss'
   location?: string | string[]
