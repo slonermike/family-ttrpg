@@ -6,11 +6,11 @@ Loaded when working on files in `src/`.
 
 ## Stack
 
-- **Vite + React 18 + TypeScript** — no routing library; view state machine via Zustand
+- **Vite + React 18 + TypeScript** — React Router v7 for URL-based navigation
 - **Tailwind CSS v4** — dark theme; amber accents; `bg-gray-950` base
 - **react-markdown** — custom remark plugin (`src/lib/remarkGmBlocks.ts`) parses `[!NARRATION]` / `[!DIALOG]` blockquote prefixes; renderer styles them as sky/amber boxes
 - **gray-matter** — custom Vite plugin parses markdown frontmatter at build time
-- **Zustand 5** — two slices: `appSlice` (view/filter), `encounterSlice` (combat state)
+- **Zustand 5** — two slices: `appSlice` (filter only), `encounterSlice` (combat state)
 - **Deployed on Vercel** — auto-deploy on push to main; no backend
 
 ---
@@ -28,8 +28,8 @@ world/**/*.md
 Key loaders:
 - `src/data/regions.ts` — glob: `/world/regions/*/index.md`
 - `src/data/locations.ts` — glob: `/world/locations/*/index.md`
-- `src/data/npcs.ts` — glob: `/world/locations/**/npc-*.md` + `/world/npcs/*.md`
-- `src/data/enemies.ts` — glob: `/world/enemies/*.md`
+- `src/data/npcs.ts` — glob: `/world/npcs/*.md`; exports `npcMap` keyed by slug
+- `src/data/enemies.ts` — glob: `/world/enemies/*.md`; exports `enemies` array and `enemyMap` keyed by slug
 
 Slug is always derived from the filename or directory name — not stored in frontmatter.
 
@@ -67,13 +67,24 @@ src/types/
 
 ## Navigation
 
-`View = 'regions' | 'manual' | 'encounter'`
+React Router v7 — all navigation is URL-based.
 
-- `regions` — default; `RegionView` manages 3-level nav (list → region → location)
-- `manual` — `MonsterManual`; can push to `encounter`
-- `encounter` — `EncounterView`; full-screen overlay
+```
+/                            → redirect to /world
+/world                       → RegionView (list)
+/world/:regionSlug           → RegionDetailRoute
+/world/:regionSlug/:locSlug  → LocationDetailRoute
+/npc/:slug                   → NpcPage  (was NpcOverlay)
+/monsters                    → MonsterManual
+/monsters/:slug              → EnemyPage (was EnemyOverlay)
+/encounter                   → EncounterView (tab bar hidden here)
+```
 
-`RegionView` exports `LocationCard`, `SceneSection`, `LocationDetail` for reuse.
+- `RegionView` (default) and `RegionDetailRoute` (named) are both exported from `RegionView.tsx`
+- `LocationDetailRoute` is a named export from `LocationsView.tsx`; `LocationDetail` is prop-driven
+- NPC pills in scenes/markdown are `<Link to="/npc/:slug">` — no store dispatch
+- Enemy pills in markdown are `<Link to="/monsters/:slug">`
+- Tab bar shows "World" / "Monsters"; hidden on `/encounter`
 
 ---
 

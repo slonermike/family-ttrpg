@@ -1,15 +1,69 @@
-import { useState } from 'react'
+import { Link, useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import { locations } from '../data/locations'
+import { regions } from '../data/regions'
 import MarkdownBody from './MarkdownBody'
 import { npcMap } from '../data/npcs'
 import type { Location, Scene } from '../types/location'
 import type { Npc } from '../types/npc'
-import NpcOverlay from './NpcOverlay'
 
 const STATUS_BADGE: Record<string, string> = {
   'occupied-by-Dorogh': 'bg-red-900 text-red-300',
   visited: 'bg-gray-700 text-gray-300',
   'inaccessible-after-ceremony': 'bg-gray-800 text-gray-500',
+}
+
+export function toSectionSlug(name: string): string {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+}
+
+function useExpandedSections() {
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const expanded = new Set(
+    (searchParams.get('expanded') ?? '').split(',').filter(Boolean)
+  )
+
+  function toggle(name: string) {
+    const slug = toSectionSlug(name)
+    const next = new Set(expanded)
+    if (next.has(slug)) next.delete(slug)
+    else next.add(slug)
+    const value = [...next].join(',')
+    setSearchParams(value ? { expanded: value } : {}, { replace: true })
+  }
+
+  function isOpen(name: string): boolean {
+    return expanded.has(toSectionSlug(name))
+  }
+
+  return { isOpen, toggle }
+}
+
+export function DuplicateSlugsWarning({ scenes }: { scenes: Scene[] }) {
+  const seen = new Map<string, string[]>()
+  for (const scene of scenes) {
+    const slug = toSectionSlug(scene.name)
+    const names = seen.get(slug) ?? []
+    names.push(scene.name)
+    seen.set(slug, names)
+  }
+  const dupes = [...seen.values()].filter((names) => names.length > 1)
+  if (dupes.length === 0) return null
+
+  return (
+    <div className="mx-4 mb-4 border border-amber-900/50 rounded-lg px-4 py-3 bg-amber-950/20">
+      <p className="text-xs text-amber-600 uppercase tracking-widest font-medium mb-1">Section slug collision</p>
+      <p className="text-xs text-amber-700/80 leading-relaxed">
+        These sections share a URL key and will expand together:{' '}
+        {dupes.map((names, i) => (
+          <span key={i}>
+            {i > 0 && ' · '}
+            <span className="text-amber-500">{names.join(' & ')}</span>
+          </span>
+        ))}
+      </p>
+    </div>
+  )
 }
 
 export function LocationCard({ loc, onClick }: { loc: Location; onClick: () => void }) {
@@ -37,14 +91,9 @@ export function LocationCard({ loc, onClick }: { loc: Location; onClick: () => v
   )
 }
 
-export function SceneSection({
-  scene,
-  onNpcClick,
-}: {
-  scene: Scene
-  onNpcClick: (npc: Npc) => void
-}) {
-  const [open, setOpen] = useState(false)
+export function SceneSection({ scene }: { scene: Scene }) {
+  const { isOpen, toggle } = useExpandedSections()
+  const open = isOpen(scene.name)
 
   const resolvedNpcs = scene.npcs
     .map((slug) => npcMap[slug])
@@ -60,7 +109,7 @@ export function SceneSection({
   return (
     <section className="border border-gray-800 rounded-xl overflow-hidden">
       <button
-        onClick={() => setOpen((p) => !p)}
+        onClick={() => toggle(scene.name)}
         className="w-full flex items-start justify-between px-4 py-3 bg-gray-900 hover:bg-gray-850 cursor-pointer text-left"
       >
         <div className="flex-1 min-w-0 pr-2">
@@ -105,16 +154,16 @@ export function SceneSection({
           {resolvedNpcs.length > 0 && (
             <div className="flex flex-wrap gap-2 pt-1">
               {resolvedNpcs.map((npc) => (
-                <button
+                <Link
                   key={npc.slug}
-                  onClick={() => onNpcClick(npc)}
-                  className="bg-gray-800 hover:bg-gray-700 text-gray-200 text-sm px-3 py-1.5 rounded-lg border border-gray-700 hover:border-gray-500 transition-colors cursor-pointer"
+                  to={`/npc/${npc.slug}`}
+                  className="bg-gray-800 hover:bg-gray-700 text-gray-200 text-sm px-3 py-1.5 rounded-lg border border-gray-700 hover:border-gray-500 transition-colors"
                 >
                   {npc.name}
                   {npc.status === 'imprisoned' && (
                     <span className="ml-1.5 text-amber-500 text-xs">⛓</span>
                   )}
-                </button>
+                </Link>
               ))}
             </div>
           )}
@@ -149,8 +198,6 @@ export function LocationDetail({
   onBack: () => void
   backLabel?: string
 }) {
-  const [activeNpc, setActiveNpc] = useState<Npc | null>(null)
-
   return (
     <div className="min-h-screen bg-gray-950 pb-24">
       <header className="sticky top-0 z-10 bg-gray-950 border-b border-gray-700 px-4 py-3 flex items-center gap-3">
@@ -171,7 +218,7 @@ export function LocationDetail({
 
       <div className="p-4 space-y-3">
         {loc.scenes.map((scene) => (
-          <SceneSection key={scene.name} scene={scene} onNpcClick={setActiveNpc} />
+          <SceneSection key={scene.name} scene={scene} />
         ))}
       </div>
 
@@ -184,29 +231,31 @@ export function LocationDetail({
         </div>
       )}
 
-      {activeNpc && <NpcOverlay npc={activeNpc} onClose={() => setActiveNpc(null)} />}
+      <DuplicateSlugsWarning scenes={loc.scenes} />
     </div>
   )
 }
 
-export default function LocationsView() {
-  const [selected, setSelected] = useState<Location | null>(null)
+export function LocationDetailRoute() {
+  const { regionSlug, locationSlug } = useParams<{ regionSlug: string; locationSlug: string }>()
+  const navigate = useNavigate()
 
-  if (selected) {
-    return <LocationDetail loc={selected} onBack={() => setSelected(null)} />
+  const loc = locations.find((l) => l.slug === locationSlug)
+  const region = regions.find((r) => r.slug === regionSlug)
+
+  if (!loc) {
+    return (
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+        <p className="text-gray-500">Location not found.</p>
+      </div>
+    )
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 pb-24">
-      <header className="sticky top-0 z-10 bg-gray-950 border-b border-gray-700 px-4 py-3">
-        <h1 className="text-white font-bold text-xl">Locations</h1>
-      </header>
-
-      <div className="p-4 space-y-3">
-        {locations.map((loc) => (
-          <LocationCard key={loc.slug} loc={loc} onClick={() => setSelected(loc)} />
-        ))}
-      </div>
-    </div>
+    <LocationDetail
+      loc={loc}
+      onBack={() => navigate(`/world/${regionSlug}`)}
+      backLabel={region?.name ?? 'Region'}
+    />
   )
 }

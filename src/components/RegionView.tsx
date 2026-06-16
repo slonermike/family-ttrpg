@@ -1,16 +1,9 @@
-import { useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { regions } from '../data/regions'
 import { locations } from '../data/locations'
 import type { Region } from '../types/region'
 import type { Location } from '../types/location'
-import type { Npc } from '../types/npc'
-import { LocationCard, LocationDetail, SceneSection } from './LocationsView'
-import NpcOverlay from './NpcOverlay'
-
-type Nav =
-  | { level: 'list' }
-  | { level: 'region'; region: Region }
-  | { level: 'location'; region: Region; location: Location }
+import { LocationCard, SceneSection, DuplicateSlugsWarning } from './LocationsView'
 
 function RegionCard({ region, onClick }: { region: Region; onClick: () => void }) {
   const locationCount = locations.filter((l) => l.region === region.slug).length
@@ -40,7 +33,6 @@ function RegionDetail({
   onBack: () => void
   onLocationClick: (loc: Location) => void
 }) {
-  const [activeNpc, setActiveNpc] = useState<Npc | null>(null)
   const regionLocations = locations.filter((l) => l.region === region.slug)
 
   return (
@@ -50,7 +42,7 @@ function RegionDetail({
           onClick={onBack}
           className="text-amber-500 hover:text-amber-400 text-sm font-medium shrink-0 cursor-pointer"
         >
-          ← Regions
+          ← World
         </button>
         <h1 className="text-white font-bold text-xl">{region.name}</h1>
       </header>
@@ -65,7 +57,7 @@ function RegionDetail({
         <div className="p-4 space-y-3">
           <p className="text-xs text-gray-600 uppercase tracking-widest font-medium px-1">Regional Scenes</p>
           {region.scenes.map((scene) => (
-            <SceneSection key={scene.name} scene={scene} onNpcClick={setActiveNpc} />
+            <SceneSection key={scene.name} scene={scene} />
           ))}
         </div>
       )}
@@ -86,33 +78,35 @@ function RegionDetail({
         </div>
       )}
 
-      {activeNpc && <NpcOverlay npc={activeNpc} onClose={() => setActiveNpc(null)} />}
+      <DuplicateSlugsWarning scenes={region.scenes} />
     </div>
   )
 }
 
+export function RegionDetailRoute() {
+  const { regionSlug } = useParams<{ regionSlug: string }>()
+  const navigate = useNavigate()
+  const region = regions.find((r) => r.slug === regionSlug)
+
+  if (!region) {
+    return (
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+        <p className="text-gray-500">Region not found.</p>
+      </div>
+    )
+  }
+
+  return (
+    <RegionDetail
+      region={region}
+      onBack={() => navigate('/world')}
+      onLocationClick={(loc) => navigate(`/world/${regionSlug}/${loc.slug}`)}
+    />
+  )
+}
+
 export default function RegionView() {
-  const [nav, setNav] = useState<Nav>({ level: 'list' })
-
-  if (nav.level === 'location') {
-    return (
-      <LocationDetail
-        loc={nav.location}
-        onBack={() => setNav({ level: 'region', region: nav.region })}
-        backLabel={nav.region.name}
-      />
-    )
-  }
-
-  if (nav.level === 'region') {
-    return (
-      <RegionDetail
-        region={nav.region}
-        onBack={() => setNav({ level: 'list' })}
-        onLocationClick={(loc) => setNav({ level: 'location', region: nav.region, location: loc })}
-      />
-    )
-  }
+  const navigate = useNavigate()
 
   return (
     <div className="min-h-screen bg-gray-950 pb-24">
@@ -125,7 +119,7 @@ export default function RegionView() {
           <RegionCard
             key={region.slug}
             region={region}
-            onClick={() => setNav({ level: 'region', region })}
+            onClick={() => navigate(`/world/${region.slug}`)}
           />
         ))}
       </div>

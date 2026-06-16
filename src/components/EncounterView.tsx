@@ -1,28 +1,20 @@
-import { useState } from 'react'
-import { useAppStore } from '../store/appSlice'
+import { useNavigate } from 'react-router-dom'
 import { useEncounterStore, useEncounter, selectAliveCount } from '../store/encounterSlice'
 import EncounterEntry from './EncounterEntry'
-import MonsterManual from './MonsterManual'
 
 export default function EncounterView() {
-  const [showManual, setShowManual] = useState(false)
-
-  const setView = useAppStore((s) => s.setView)
+  const navigate = useNavigate()
   const encounter = useEncounter()
   const aliveCount = useEncounterStore(selectAliveCount)
-
-  if (showManual) {
-    return <MonsterManual onBack={() => setShowManual(false)} />
-  }
 
   return (
     <div className="min-h-screen bg-gray-950 pb-28">
       <header className="sticky top-0 z-10 bg-gray-950 border-b border-gray-700 px-4 py-3 flex items-center justify-between">
         <button
-          onClick={() => setView('manual')}
+          onClick={() => navigate('/monsters')}
           className="text-amber-500 hover:text-amber-400 text-sm font-medium cursor-pointer"
         >
-          ← Manual
+          ← Monsters
         </button>
         <h1 className="text-white font-bold text-lg">
           Encounter
@@ -44,7 +36,7 @@ export default function EncounterView() {
       </div>
 
       <button
-        onClick={() => setShowManual(true)}
+        onClick={() => navigate('/monsters')}
         className="fixed bottom-4 left-4 right-4 bg-amber-700 hover:bg-amber-600 active:bg-amber-800 text-white font-bold py-3.5 rounded-xl shadow-lg transition-colors cursor-pointer"
       >
         + Add Enemy

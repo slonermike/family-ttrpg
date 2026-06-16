@@ -1,7 +1,10 @@
 import ReactMarkdown from 'react-markdown'
 import type { Components } from 'react-markdown'
+import { Link } from 'react-router-dom'
 import remarkDirective from 'remark-directive'
 import { remarkGmBlocks } from '../lib/remarkGmBlocks'
+import { npcMap } from '../data/npcs'
+import { enemyMap } from '../data/enemies'
 
 const Blockquote = ({ children, node }: { children?: React.ReactNode; node?: any }) => {
   const classes: string[] = Array.isArray(node?.properties?.className)
@@ -67,10 +70,39 @@ const Details = ({
   </details>
 )
 
-const components: Components = {
+// Defined at module scope for stable references — avoids react-markdown remounting on parent re-renders
+const NpcPill = ({ slug, node: _node }: { slug?: string; node?: unknown }) => {
+  if (!slug) return null
+  const npc = npcMap[slug]
+  return (
+    <Link
+      to={`/npc/${slug}`}
+      className="inline-flex items-center gap-1 bg-gray-800 hover:bg-gray-700 border border-gray-600 hover:border-gray-400 text-gray-200 text-xs px-2 py-0.5 rounded-full transition-colors align-baseline"
+    >
+      {npc?.name ?? slug}
+    </Link>
+  )
+}
+
+const EnemyPill = ({ slug, node: _node }: { slug?: string; node?: unknown }) => {
+  if (!slug) return null
+  const enemy = enemyMap[slug]
+  return (
+    <Link
+      to={`/monsters/${slug}`}
+      className="inline-flex items-center gap-1 bg-red-950 hover:bg-red-900 border border-red-800 hover:border-red-600 text-red-200 text-xs px-2 py-0.5 rounded-full transition-colors align-baseline"
+    >
+      ⚔ {enemy?.name ?? slug}
+    </Link>
+  )
+}
+
+const components = {
   blockquote: Blockquote as Components['blockquote'],
   details: Details as unknown as Components['details'],
-}
+  'npc-pill': NpcPill as unknown as Components[keyof Components],
+  'enemy-pill': EnemyPill as unknown as Components[keyof Components],
+} satisfies Partial<Components> & Record<string, unknown>
 
 const remarkPlugins = [remarkDirective, remarkGmBlocks]
 

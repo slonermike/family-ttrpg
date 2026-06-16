@@ -1,13 +1,10 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { enemies } from '../data/enemies'
 import { useAppStore, selectFilter } from '../store/appSlice'
 import { useEncounterStore, selectAliveCount, useEncounter } from '../store/encounterSlice'
 import type { Enemy } from '../types/enemy'
 import EnemyCard from './EnemyCard'
-
-interface Props {
-  onBack?: () => void
-}
 
 const GENERAL = 'General Use'
 const TIER_ORDER: Record<string, number> = { l1: 0, l2: 1, boss: 2 }
@@ -44,17 +41,16 @@ function groupEnemies(list: Enemy[]): [string, Enemy[]][] {
 const allGroups = groupEnemies(enemies)
 const initialOpen = Object.fromEntries(allGroups.map(([name]) => [name, name === GENERAL]))
 
-export default function MonsterManual({ onBack }: Props) {
+export default function MonsterManual() {
   const [open, setOpen] = useState<Record<string, boolean>>(initialOpen)
+  const navigate = useNavigate()
 
   const filter = useAppStore(selectFilter)
   const setFilter = useAppStore((s) => s.setFilter)
-  const setView = useAppStore((s) => s.setView)
   const addEnemy = useEncounterStore((s) => s.addEnemy)
   const encounter = useEncounter()
   const aliveCount = useEncounterStore(selectAliveCount)
 
-  const isOverlay = !!onBack
   const query = filter.trim().toLowerCase()
 
   const visibleGroups = query
@@ -76,21 +72,8 @@ export default function MonsterManual({ onBack }: Props) {
 
   return (
     <div className="min-h-screen bg-gray-950 pb-28">
-      <header className="sticky top-0 z-10 bg-gray-950 border-b border-gray-700 px-4 py-3 flex items-center gap-3">
-        {isOverlay && (
-          <button
-            onClick={onBack}
-            className="text-amber-500 hover:text-amber-400 text-sm font-medium shrink-0 cursor-pointer"
-          >
-            ← Back
-          </button>
-        )}
-        <h1 className="text-white font-bold text-xl shrink-0">Monster Manual</h1>
-        {isOverlay && encounter.length > 0 && (
-          <span className="text-xs text-gray-400 ml-auto shrink-0">
-            {encounter.length} in encounter
-          </span>
-        )}
+      <header className="sticky top-0 z-10 bg-gray-950 border-b border-gray-700 px-4 py-3">
+        <h1 className="text-white font-bold text-xl">Monster Manual</h1>
       </header>
 
       <div className="px-4 pt-3 pb-1">
@@ -137,10 +120,10 @@ export default function MonsterManual({ onBack }: Props) {
         ))}
       </div>
 
-      {!isOverlay && encounter.length > 0 && (
+      {encounter.length > 0 && (
         <button
-          onClick={() => setView('encounter')}
-          className="fixed bottom-4 left-4 right-4 bg-amber-700 hover:bg-amber-600 active:bg-amber-800 text-white font-bold py-3.5 rounded-xl shadow-lg transition-colors cursor-pointer"
+          onClick={() => navigate('/encounter')}
+          className="fixed bottom-16 left-4 right-4 bg-amber-700 hover:bg-amber-600 active:bg-amber-800 text-white font-bold py-3.5 rounded-xl shadow-lg transition-colors cursor-pointer"
         >
           View Encounter ({aliveCount} alive / {encounter.length} total) →
         </button>
