@@ -17,6 +17,7 @@ export interface Scene {
   description: string
   gm_notes?: string
   npcs: string[]
+  items?: string[]
   encounters?: PlannedEncounter[]
 }
 

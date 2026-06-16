@@ -5,6 +5,7 @@ import remarkDirective from 'remark-directive'
 import { remarkGmBlocks } from '../lib/remarkGmBlocks'
 import { npcMap } from '../data/npcs'
 import { enemyMap } from '../data/enemies'
+import { itemMap } from '../data/items'
 
 const Blockquote = ({ children, node }: { children?: React.ReactNode; node?: any }) => {
   const classes: string[] = Array.isArray(node?.properties?.className)
@@ -97,11 +98,25 @@ const EnemyPill = ({ slug, node: _node }: { slug?: string; node?: unknown }) => 
   )
 }
 
+const ItemPill = ({ slug, node: _node }: { slug?: string; node?: unknown }) => {
+  if (!slug) return null
+  const item = itemMap[slug]
+  return (
+    <Link
+      to={`/items/${slug}`}
+      className="inline-flex items-center gap-1 bg-amber-950 hover:bg-amber-900 border border-amber-800 hover:border-amber-600 text-amber-200 text-xs px-2 py-0.5 rounded-full transition-colors align-baseline"
+    >
+      ◆ {item?.name ?? slug}
+    </Link>
+  )
+}
+
 const components = {
   blockquote: Blockquote as Components['blockquote'],
   details: Details as unknown as Components['details'],
   'npc-pill': NpcPill as unknown as Components[keyof Components],
   'enemy-pill': EnemyPill as unknown as Components[keyof Components],
+  'item-pill': ItemPill as unknown as Components[keyof Components],
 } satisfies Partial<Components> & Record<string, unknown>
 
 const remarkPlugins = [remarkDirective, remarkGmBlocks]

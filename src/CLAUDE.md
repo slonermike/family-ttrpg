@@ -15,6 +15,14 @@ Loaded when working on files in `src/`.
 
 ---
 
+## Zustand Slices
+
+- `appSlice.ts` — filter state only
+- `encounterSlice.ts` — combat encounter state (enemies added to combat tracker)
+- `printSlice.ts` — print queue state (items staged for `window.print()`)
+
+---
+
 ## Data Flow
 
 ```
@@ -30,6 +38,7 @@ Key loaders:
 - `src/data/locations.ts` — glob: `/world/locations/*/index.md`
 - `src/data/npcs.ts` — glob: `/world/npcs/*.md`; exports `npcMap` keyed by slug
 - `src/data/enemies.ts` — glob: `/world/enemies/*.md`; exports `enemies` array and `enemyMap` keyed by slug
+- `src/data/items.ts` — glob: `/world/items/item-*.md`; exports `items` array and `itemMap` keyed by slug
 
 Slug is always derived from the filename or directory name — not stored in frontmatter.
 
@@ -61,6 +70,7 @@ src/types/
   location.ts   — Location, Scene, SceneType, PlannedEncounter, PlannedEnemy
   npc.ts        — Npc interface
   enemy.ts      — Enemy, EncounterEnemy interfaces
+  item.ts       — Item, PrintItem interfaces
 ```
 
 ---
@@ -75,6 +85,9 @@ React Router v7 — all navigation is URL-based.
 /world/:regionSlug           → RegionDetailRoute
 /world/:regionSlug/:locSlug  → LocationDetailRoute
 /npc/:slug                   → NpcPage  (was NpcOverlay)
+/items                       → ItemsView (list with type filter + search)
+/items/:slug                 → ItemPage (detail with + Add to Print)
+/print                       → PrintView (staged items + window.print(); tab bar hidden here)
 /monsters                    → MonsterManual
 /monsters/:slug              → EnemyPage (was EnemyOverlay)
 /encounter                   → EncounterView (tab bar hidden here)
@@ -84,7 +97,8 @@ React Router v7 — all navigation is URL-based.
 - `LocationDetailRoute` is a named export from `LocationsView.tsx`; `LocationDetail` is prop-driven
 - NPC pills in scenes/markdown are `<Link to="/npc/:slug">` — no store dispatch
 - Enemy pills in markdown are `<Link to="/monsters/:slug">`
-- Tab bar shows "World" / "Monsters"; hidden on `/encounter`
+- Item pills in markdown are `<Link to="/items/:slug">`
+- Tab bar shows "World" / "Items" / "Monsters"; hidden on `/encounter` and `/print`
 
 ---
 

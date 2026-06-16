@@ -17,9 +17,9 @@ He is not dangerous. He is proud, loud, and occasionally useful, which is its ow
 
 ## Session 1 Connection
 
-MuhDude challenged Margrave to lift the Blade of Righteous Judgment. Margrave, being Margrave, could not resist. He tried. He could not move it. This is probably how the party acquired the Merchant's ID — either as a bet won, a trade made in the chaos, or a document dropped in the commotion.
+MuhDude challenged Margrave to lift the :item[blade-of-righteous-judgment]. Margrave, being Margrave, could not resist. He tried. He could not move it. This is probably how the party acquired the :item[merchants-id] — either as a bet won, a trade made in the chaos, or a document dropped in the commotion.
 
-**Merchant's ID details TBD** — confirm acquisition circumstances when relevant to session.
+:item[merchants-id] details TBD — confirm acquisition circumstances when relevant to session.
 
 ## GM Notes
 

@@ -48,7 +48,7 @@ She left Rjocht two years before session 1 with five friends who saw what was co
 > **Lisel:** "I knew he wouldn't leave." She laughs, but it comes out a little unsteady. "I stood in that forge and I said 'Papa, please.' He just looked at me." She shakes her head. "Stubborn as iron, that man. Twice as hard."
 
 > [!NARRATION]
-> She reaches for the maker token without asking — picks it up, turns it over. She grew up with that mark on everything.
+> She reaches for :item[joriks-blessing] without asking — picks it up, turns it over. She grew up with that mark on everything.
 
 > [!DIALOG]
 > **Lisel:** "He gave you this." Her voice shifts. Quieter. "He doesn't give those to people he doesn't trust."

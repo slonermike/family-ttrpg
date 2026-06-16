@@ -40,7 +40,7 @@ scenes:
     gm_notes: |
       This scene has two beats: the warm welcome, then the cold one.
 
-      Let the party relax first. Food, fire, a song or two. The spread is modest — this is a hard piece of land — but they've put everything into it. Then Lisel spots Jorik's maker token from across the fire. The music cuts. Weapons appear from positions the party didn't think to watch.
+      Let the party relax first. Food, fire, a song or two. The spread is modest — this is a hard piece of land — but they've put everything into it. Then Lisel spots :item[joriks-blessing] from across the fire. The music cuts. Weapons appear from positions the party didn't think to watch.
 
       Lisel isn't hostile — she's protective. She thinks they took it from him.
 
@@ -49,6 +49,8 @@ scenes:
       **If the party brings word that Rjocht is free:** The Hollow will want to send word to Jorik themselves — they have contacts on the road. Within weeks, Jorik gets the message: his daughter lives, the city is open, there are people who need a blacksmith.
     npcs:
       - lisel
+    items:
+      - joriks-blessing
 
   - name: Over the Ridge
     type: event

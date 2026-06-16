@@ -56,11 +56,11 @@ function processBlockquote(node: any) {
 }
 
 function processInlineDirective(node: any) {
-  if (node.name !== 'npc' && node.name !== 'enemy') return
+  if (!['npc', 'enemy', 'item'].includes(node.name)) return
   const slug = node.children?.map((c: any) => c.value ?? '').join('').trim() ?? ''
   if (!slug) return
   node.data = node.data || {}
-  node.data.hName = node.name === 'npc' ? 'npc-pill' : 'enemy-pill'
+  node.data.hName = node.name === 'npc' ? 'npc-pill' : node.name === 'enemy' ? 'enemy-pill' : 'item-pill'
   node.data.hProperties = { slug }
 }
 
@@ -94,7 +94,7 @@ export function remarkGmBlocks() {
         if (node.type === 'containerDirective' && node.name === 'details') {
           processDetailsDirective(node)
         }
-        if (node.type === 'inlineDirective') processInlineDirective(node)
+        if (node.type === 'textDirective') processInlineDirective(node)
         if (node.children?.length) walk(node.children)
       }
     }

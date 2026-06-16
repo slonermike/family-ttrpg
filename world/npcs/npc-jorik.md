@@ -143,7 +143,7 @@ He is not impressive to look at. He is enormous, soot-covered, and chooses his w
 
 Give him weight. When Jorik speaks, slow down.
 
-He gave the party a Healing Potion without asking for anything in return. He told them about Dorogh — not the military details, but the human cost. The people. What the city used to be.
+He gave the party a :item[healing-potion] without asking for anything in return. He told them about Dorogh — not the military details, but the human cost. The people. What the city used to be.
 
 He can serve as a safe return point inside Rjocht if the party needs a place to rest or regroup. Under Dorogh, a blacksmith is useful — weapons and chains must be maintained. Jorik has walked that line with integrity: making what he must, protecting who he can.
 

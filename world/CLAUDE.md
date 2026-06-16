@@ -40,6 +40,7 @@ scenes:                  # reusable regional scene library
     description: string  # player-facing narration; use > blockquote for spoken text
     gm_notes: string
     npcs: string[]       # NPC slugs
+    items: string[]      # item slugs (renders item pill buttons in the SPA)
     encounters:
       - name: string
         enemies:
@@ -67,6 +68,7 @@ scenes:
     description: string  # player-facing narration; use > blockquote for spoken text
     gm_notes: string
     npcs: string[]       # NPC slugs (used to render NPC buttons in the SPA)
+    items: string[]      # item slugs (renders item pill buttons in the SPA)
     encounters:
       - name: string
         enemies:
@@ -110,6 +112,21 @@ unique_items: string[]
 ```
 
 Body text = combat behavior, special notes. Becomes `description` field.
+
+### Item (`world/items/item-[name].md`)
+
+Items are first-class entities. Slug = filename minus `item-` prefix and `.md`. Item holder state is tracked in `sessions/*/debrief.md`, not here.
+
+```yaml
+name: string
+type: consumable | weapon | armor | legendary | story
+category?: string        # consumables only: healing | combat | social | utility | nature | luck
+tagline: string          # one-line flavor description
+effect: string           # mechanical effect (shown prominently on item card)
+consumable: boolean      # true = permanently removed after use
+```
+
+Body text = lore, GM notes. Becomes `description` field.
 
 ---
 
@@ -178,6 +195,11 @@ Talk to :npc[jorik] before heading to the keep.
 Two :enemy[l2-corrupted-guard] flank the entrance.
 ```
 
-Slugs match the filenames: `npc-jorik.md` → `jorik`; `enemy-l2-corrupted-guard.md` → `l2-corrupted-guard`; `boss-dorogh-stage1.md` → `dorogh-stage1`.
+**Item pill** — links to the item detail page:
+```
+The party finds a :item[healing-potion] behind the barrel.
+```
+
+Slugs match the filenames: `npc-jorik.md` → `jorik`; `enemy-l2-corrupted-guard.md` → `l2-corrupted-guard`; `boss-dorogh-stage1.md` → `dorogh-stage1`; `item-healing-potion.md` → `healing-potion`.
 
 These work in any markdown field: `description`, `gm_notes`, NPC body text, region/location body text.

@@ -12,7 +12,7 @@ relationships:
   - Jorik: Connected — Jorik mentioned Jasper by name; they know each other from the trade road
 ---
 
-A round merchant who has made the road between the villages and Rjocht his life for many years. He is one of those people who finds everything interesting and most things delicious. The Strange Bun did not disgust him. He was enthusiastic.
+A round merchant who has made the road between the villages and Rjocht his life for many years. He is one of those people who finds everything interesting and most things delicious. The :item[strange-bun] did not disgust him. He was enthusiastic.
 
 Under Dorogh's oppression, merchants like Jasper have had to walk a careful line — keep trading, keep moving, don't attract attention. He still finds reasons to laugh. Joy is returning to him as he senses something is shifting.
 

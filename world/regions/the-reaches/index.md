@@ -20,7 +20,7 @@ scenes:
 
       **If they don't notice:** crude arrows from the bushes; cackling laughter; four goblins burst onto the road. Lead goblin: *"Your coin or your lives, travelers! Drop your packs and run, or we'll take EVERYTHING!"*
 
-      **Talking them down is still on the table after combat starts:** Heart ("We don't want to fight you!"), Wit ("There are six of us, four of you — bad odds!"), or offer something (a honeycake). They might take it and leave. Or get greedy.
+      **Talking them down is still on the table after combat starts:** Heart ("We don't want to fight you!"), Wit ("There are six of us, four of you — bad odds!"), or offer something (a :item[honeycake]). They might take it and leave. Or get greedy.
 
       **Behavior:** When 2+ are down, remaining goblins may flee — *"Last goblin's eyes go wide. Drops weapon and runs screaming!"* Let players choose to chase or let go. That's the mercy moment.
 
@@ -67,12 +67,14 @@ scenes:
       > [!NARRATION]
       > The entire village erupts in tiny cheering. Someone produces a tiny trumpet. It is the smallest and most triumphant sound you've ever heard.
 
-      **Reward:** Elder Thornspike presents the **Pineapple Scepter** with immense ceremony. A small feast follows (the food is surprisingly delicious, though small). The party may stay the night — warmth, safety, and a hundred tiny guards watching over them.
+      **Reward:** Elder Thornspike presents the :item[pineapple-scepter] with immense ceremony. A small feast follows (the food is surprisingly delicious, though small). The party may stay the night — warmth, safety, and a hundred tiny guards watching over them.
 
       **The costume:** It doesn't need to be elaborate. They might stitch together yellow cloth and straw, find a novelty item from a merchant, or just commit to a bush with leaves tucked in. Keep it fun — the tribe's enthusiasm is proportional to how committed the party is to the bit.
 
       **Diplomatic option (no costume):** Wit 12+ establishes contact — the guard agrees to "send a message to the elder." The elder emerges and offers a deal: *"You may have the Scepter... if you bring us one (1) real pineapple."* Resolution left to the GM.
     npcs: []
+    items:
+      - pineapple-scepter
     encounters: []
   - name: The Carp Mermaid's Crossing
     type: event
@@ -109,7 +111,7 @@ scenes:
       - Anything the players describe with enough creativity and commitment
 
       **What doesn't work:**
-      - Strange Bun — *"That is not beautiful."* She says this flatly, with fish eyes, and waits.
+      - :item[strange-bun] — *"That is not beautiful."* She says this flatly, with fish eyes, and waits.
       - Anything dirty or gross — *"That is not clean."* Same delivery.
       - Anything merely stinky — *"No."*
       - Anything merely beautiful — *"No. Did you not listen?"*

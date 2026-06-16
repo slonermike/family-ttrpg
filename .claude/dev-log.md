@@ -5,6 +5,52 @@ Sessions are logged in reverse-chronological order (newest first).
 
 ---
 
+## 2026-06-16 — Items as First-Class Entities + Print Queue
+
+**Summary:** Converted items from 4 aggregate markdown tables into 46 individual slug-able entity files following the NPC/Enemy pattern. Added an Items tab with browsing, filtering, and full detail pages. Built a print queue system analogous to the encounter queue — "Add to Print" stages items; `/print` renders a printable card grid via `window.print()`. Fixed a latent bug where inline `:npc[slug]`, `:enemy[slug]`, and `:item[slug]` directives never rendered as pills because `remark-directive` v4 uses `textDirective` (not `inlineDirective`) for inline syntax. Scrubbed all world markdown files to replace freehand item name mentions with `:item[slug]` directives.
+
+### Key Changes
+
+- **Deleted** 4 aggregate item files (`consumables.md`, `weapons.md`, `legendaries.md`, `story-items.md`) and **created** 46 individual `world/items/item-[slug].md` files — one per item; slug = filename minus `item-` prefix
+- Frontmatter schema: `name`, `type` (consumable|weapon|armor|legendary|story), `category?` (consumables only), `tagline`, `effect`, `consumable: boolean`; body = lore/GM notes → `description`; item holder state is NOT tracked here (lives in session debriefs only)
+- Created `src/types/item.ts` — `Item` interface and `PrintItem { id, base: Item, qty }` for the print queue
+- Created `src/data/items.ts` — `import.meta.glob` loader; exports `items[]` and `itemMap`
+- Created `src/store/printSlice.ts` — `addItem` deduplicates by slug and increments qty (vs encounter queue which duplicates with labels); `setQty`, `removeItem`, `clearPrint`; `usePrint` with `useShallow`
+- Created `src/components/ItemCard.tsx` — type badge colors (consumable=sky, weapon=orange, armor=slate, legendary=purple, story=emerald); rose "CONSUMABLE" badge; "+ Add" button calls `onAdd(item)` without navigation; exports `typeStyle`/`typeLabel` reused by ItemPage
+- Created `src/components/ItemPage.tsx` — mirrors EnemyPage; effect in amber-tinted box; fixed bottom "+ Add to Print" → adds then navigates to `/print`
+- Created `src/components/ItemsView.tsx` — type filter pills, search on name/effect/tagline, grouped by type with collapsible sections, float button for print count
+- Created `src/components/PrintView.tsx` — screen: qty `−/+`, remove ✕, Clear, Print buttons; print layout (`print:hidden`/`print:block`): 3-column grid, `aspect-square` cards for cutting, `break-inside-avoid`
+- Updated `src/App.tsx` — added `/items`, `/items/:slug`, `/print` routes; 3-tab bar (World | Items | Monsters); tab bar hidden on `/encounter` and `/print`; `lastItemsPath` tracking
+- Updated `src/types/location.ts` — added `items?: string[]` to `Scene` interface (covers both Location and Region scenes)
+- Updated `src/components/LocationsView.tsx` — `SceneSection` resolves `scene.items[]` to amber pills alongside NPC pills; amber pill style with ◆ prefix, links to `/items/:slug`
+- **Bug fix** in `src/lib/remarkGmBlocks.ts` — changed `node.type === 'inlineDirective'` to `node.type === 'textDirective'`; `remark-directive` v4 uses `textDirective` for inline `:name[content]` syntax; the old name never matched, silently breaking all inline pills (npc, enemy, item) — they only ever worked via YAML arrays
+- Updated `src/components/MarkdownBody.tsx` — added `ItemPill` component (amber, ◆ icon, links to `/items/:slug`), registered `'item-pill'` in components
+- **World scrub** — updated item references in: `npc-jorik.md`, `npc-jasper.md`, `npc-margrave.md`, `npc-constance.md`, `npc-dorogh.md`, `npc-lisel.md`, `hidden-grove/index.md`, `the-reaches/index.md`, `rjocht/index.md`, `amber-hollow/index.md`, `boss-dorogh-stage2.md`; added `items: [slug]` YAML array to scene frontmatter where the item is the scene hinge (Pineapple Tribe → pineapple-scepter; Harvest Festival → joriks-blessing)
+- Updated `world/CLAUDE.md` — added Item frontmatter schema; added `items: string[]` to Region and Location scene schemas; added `:item[slug]` to inline directives section
+- Updated `src/CLAUDE.md` — added `items.ts`, `item.ts`, all three new routes, and `printSlice.ts`
+
+### Key Decisions
+
+- **46 individual files over 4 tables**: same pattern as NPCs/enemies; each item is independently addressable, slug-able, and routable; no shared index file needed
+- **No `current_holder` in item frontmatter**: game state (who holds what) lives only in `sessions/*/debrief.md` Party State; item files describe the item, not its location in play
+- **Print queue deduplicates**: `addItem` checks for existing slug and increments qty — print semantics are "N copies of this card" not "N separate entries"; differs intentionally from encounter queue
+- **Dual item reference support**: `items: [slug]` in scene YAML (amber pill in SceneSection) AND `:item[slug]` directive in prose (amber pill in MarkdownBody); both render identically; "support both where possible"
+- **`aspect-square` for print cards**: Tailwind `aspect-ratio: 1/1` gives cards equal height and width; user specified "minimum height the same as the width"
+
+### Challenges
+
+- **`textDirective` vs `inlineDirective`**: `remark-directive` v4 changed the node type for inline `:name[content]` from `inlineDirective` to `textDirective`. The old check never matched, so all inline pills silently no-oped. Traced via `node_modules/mdast-util-directive/lib/index.js`. Fix was a one-word change; also retroactively corrects npc and enemy inline pills.
+- **`<div> cannot appear as descendant of <p>` warning**: initially suspected `ItemPill` div-inside-p nesting; root cause was the `textDirective` bug — `ItemPill` wasn't being called at all. DOM warning was a red herring for diagnosis.
+
+### Opportunities Identified
+
+- **`:enemy[l1-carp-mermaid]`** referenced in `the-reaches/index.md` gm_notes — a new enemy that doesn't have a stat block yet
+- **Inline pills in `<p>` tags**: pill elements (`<Link>` wrapping a div) rendered inside paragraph elements technically violates HTML nesting; switching pills to `<span>`/`display:inline-block` would be spec-compliant
+- **Print layout polish**: 3-column grid is functional; could add cut-line borders or card-stock sizing CSS for physical printing
+- **Item "found in" backlinks**: item detail pages have no indication of which scenes contain them; could derive from world data at build time
+
+---
+
 ## 2026-06-14 — GM Tool SPA: Locations View & NPC Reference
 
 **Summary:** Added a Locations tab to the GM Tool SPA. Location folders drive the grouping; each location's `index.md` defines scenes via frontmatter, each scene lists NPC slugs. Tapping an NPC chip opens a full-screen overlay with the NPC's markdown rendered. Established a blockquote convention for narration (text the GM speaks aloud), rendered as a distinct callout box. Installed `react-markdown` and `@tailwindcss/typography`.

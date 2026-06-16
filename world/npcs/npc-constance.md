@@ -39,7 +39,7 @@ She tells the party what she knows:
 ## The Choice (Scene 5)
 
 **FREE HER NOW (loud):**
-- Might 14+ to smash chains, or Lockpicks 12+
+- Might 14+ to smash chains, or :item[lockpicks] 12+
 - Guards hear it; combat starts immediately
 - Constance fights with the party (weakened: -2 to rolls, gives party +1 inspiration)
 - After battle: *"Thank you. Now go. I'll guard the door."*

@@ -3,8 +3,10 @@ import { locations } from '../data/locations'
 import { regions } from '../data/regions'
 import MarkdownBody from './MarkdownBody'
 import { npcMap } from '../data/npcs'
+import { itemMap } from '../data/items'
 import type { Location, Scene } from '../types/location'
 import type { Npc } from '../types/npc'
+import type { Item } from '../types/item'
 
 const STATUS_BADGE: Record<string, string> = {
   'occupied-by-Dorogh': 'bg-red-900 text-red-300',
@@ -99,6 +101,10 @@ export function SceneSection({ scene }: { scene: Scene }) {
     .map((slug) => npcMap[slug])
     .filter((n): n is Npc => !!n)
 
+  const resolvedItems = (scene.items ?? [])
+    .map((slug) => itemMap[slug])
+    .filter((i): i is Item => !!i)
+
   const sceneTypeBadge: Record<string, string> = {
     explorable: 'text-sky-500',
     event: 'text-violet-400',
@@ -151,7 +157,7 @@ export function SceneSection({ scene }: { scene: Scene }) {
             </div>
           )}
 
-          {resolvedNpcs.length > 0 && (
+          {(resolvedNpcs.length > 0 || resolvedItems.length > 0) && (
             <div className="flex flex-wrap gap-2 pt-1">
               {resolvedNpcs.map((npc) => (
                 <Link
@@ -163,6 +169,15 @@ export function SceneSection({ scene }: { scene: Scene }) {
                   {npc.status === 'imprisoned' && (
                     <span className="ml-1.5 text-amber-500 text-xs">⛓</span>
                   )}
+                </Link>
+              ))}
+              {resolvedItems.map((item) => (
+                <Link
+                  key={item.slug}
+                  to={`/items/${item.slug}`}
+                  className="bg-amber-950 hover:bg-amber-900 text-amber-200 text-sm px-3 py-1.5 rounded-lg border border-amber-800 hover:border-amber-600 transition-colors"
+                >
+                  ◆ {item.name}
                 </Link>
               ))}
             </div>

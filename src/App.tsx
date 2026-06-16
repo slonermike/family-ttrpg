@@ -5,9 +5,13 @@ import RegionView, { RegionDetailRoute } from './components/RegionView'
 import { LocationDetailRoute } from './components/LocationsView'
 import NpcPage from './components/NpcOverlay'
 import EnemyPage from './components/EnemyOverlay'
+import ItemsView from './components/ItemsView'
+import ItemPage from './components/ItemPage'
+import PrintView from './components/PrintView'
 
 // Module-level: remember last visited path within each section
 let lastWorldPath = '/world'
+let lastItemsPath = '/items'
 let lastMonstersPath = '/monsters'
 
 function TabBar() {
@@ -16,9 +20,11 @@ function TabBar() {
   const fullPath = pathname + search
 
   if (pathname.startsWith('/world')) lastWorldPath = fullPath
+  if (pathname.startsWith('/items')) lastItemsPath = fullPath
   if (pathname.startsWith('/monsters')) lastMonstersPath = fullPath
 
   const isWorld = pathname.startsWith('/world') || pathname.startsWith('/npc')
+  const isItems = pathname.startsWith('/items')
   const isMonsters = pathname.startsWith('/monsters')
 
   return (
@@ -30,6 +36,14 @@ function TabBar() {
         }`}
       >
         World
+      </button>
+      <button
+        onClick={() => navigate(lastItemsPath)}
+        className={`flex-1 py-3 text-sm font-medium transition-colors cursor-pointer ${
+          isItems ? 'text-amber-400' : 'text-gray-500 hover:text-gray-300'
+        }`}
+      >
+        Items
       </button>
       <button
         onClick={() => navigate(lastMonstersPath)}
@@ -45,7 +59,7 @@ function TabBar() {
 
 export default function App() {
   const { pathname } = useLocation()
-  const hideTab = pathname === '/encounter'
+  const hideTab = pathname === '/encounter' || pathname === '/print'
 
   return (
     <div>
@@ -55,6 +69,9 @@ export default function App() {
         <Route path="/world/:regionSlug" element={<RegionDetailRoute />} />
         <Route path="/world/:regionSlug/:locationSlug" element={<LocationDetailRoute />} />
         <Route path="/npc/:slug" element={<NpcPage />} />
+        <Route path="/items" element={<ItemsView />} />
+        <Route path="/items/:slug" element={<ItemPage />} />
+        <Route path="/print" element={<PrintView />} />
         <Route path="/monsters" element={<MonsterManual />} />
         <Route path="/monsters/:slug" element={<EnemyPage />} />
         <Route path="/encounter" element={<EncounterView />} />

@@ -109,7 +109,7 @@ Heavy iron-banded doors flanked by Corrupted Guards. Basement cell has a barred 
 
 ## Entry Points
 
-**East Market Gate** — Traders' gate. Guarded by Tam and Beren (conscripted, not true believers). Heart or Wit roll 12+ to talk through. Merchant's ID is an automatic pass.
+**East Market Gate** — Traders' gate. Guarded by Tam and Beren (conscripted, not true believers). Heart or Wit roll 12+ to talk through. :item[merchants-id] is an automatic pass.
 
 **Main Gates** — 4-6 Corrupted Soldiers. Do not attempt without extreme preparation.
 

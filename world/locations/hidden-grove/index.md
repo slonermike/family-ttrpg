@@ -30,7 +30,7 @@ Ancient forest deep enough that the sky disappears. Massive trees grow so close 
 
 The air here does not feel empty. It hums. Children might describe it as the sound of something listening.
 
-This is where Elder Greymane conducted the gifting ceremony before the campaign began. The party received their ability cards and starting items here. The Blade of Righteous Judgment was passed to MuhDude.
+This is where Elder Greymane conducted the gifting ceremony before the campaign began. The party received their ability cards and starting items here. The :item[blade-of-righteous-judgment] was passed to MuhDude.
 
 The Grove cannot be found by searching. Paths through the forest only open when the Spirit of Life allows. It is not a place you go to — it is a place you are brought to.
 

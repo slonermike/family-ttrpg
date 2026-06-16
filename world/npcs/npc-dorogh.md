@@ -68,11 +68,11 @@ When someone uses INSIGHT successfully:
 | Resistances | Agility only |
 | Reinforcements | Shadow Minions already summoned |
 
-*"Shadows part. There — carved into the center of his breastplate — a shape, glowing faintly. The exact shape of the Blade of Righteous Judgment. This is where the Blade must strike. But you'll need to break through to reach it."*
+*"Shadows part. There — carved into the center of his breastplate — a shape, glowing faintly. The exact shape of the :item[blade-of-righteous-judgment]. This is where the Blade must strike. But you'll need to break through to reach it."*
 
 Opening narration: *"You don't understand! I did what I had to! They were weak! I made them strong!"*
 
-**Only the Blade of Righteous Judgment can deliver the killing blow.**
+**Only the :item[blade-of-righteous-judgment] can deliver the killing blow.**
 
 ### Milestone Dialogue
 
