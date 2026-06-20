@@ -6,6 +6,7 @@ import { remarkGmBlocks } from '../lib/remarkGmBlocks'
 import { npcMap } from '../data/npcs'
 import { enemyMap } from '../data/enemies'
 import { itemMap } from '../data/items'
+import { mapMap } from '../data/maps'
 
 const Blockquote = ({ children, node }: { children?: React.ReactNode; node?: any }) => {
   const classes: string[] = Array.isArray(node?.properties?.className)
@@ -111,12 +112,26 @@ const ItemPill = ({ slug, node: _node }: { slug?: string; node?: unknown }) => {
   )
 }
 
+const MapPill = ({ slug, node: _node }: { slug?: string; node?: unknown }) => {
+  if (!slug) return null
+  const map = mapMap[slug]
+  return (
+    <Link
+      to={`/maps/${slug}`}
+      className="inline-flex items-center gap-1 bg-teal-950 hover:bg-teal-900 border border-teal-800 hover:border-teal-600 text-teal-200 text-xs px-2 py-0.5 rounded-full transition-colors align-baseline"
+    >
+      🗺 {map?.name ?? slug}
+    </Link>
+  )
+}
+
 const components = {
   blockquote: Blockquote as Components['blockquote'],
   details: Details as unknown as Components['details'],
   'npc-pill': NpcPill as unknown as Components[keyof Components],
   'enemy-pill': EnemyPill as unknown as Components[keyof Components],
   'item-pill': ItemPill as unknown as Components[keyof Components],
+  'map-pill': MapPill as unknown as Components[keyof Components],
 } satisfies Partial<Components> & Record<string, unknown>
 
 const remarkPlugins = [remarkDirective, remarkGmBlocks]

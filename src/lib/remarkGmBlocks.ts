@@ -56,11 +56,12 @@ function processBlockquote(node: any) {
 }
 
 function processInlineDirective(node: any) {
-  if (!['npc', 'enemy', 'item'].includes(node.name)) return
+  if (!['npc', 'enemy', 'item', 'map'].includes(node.name)) return
   const slug = node.children?.map((c: any) => c.value ?? '').join('').trim() ?? ''
   if (!slug) return
   node.data = node.data || {}
-  node.data.hName = node.name === 'npc' ? 'npc-pill' : node.name === 'enemy' ? 'enemy-pill' : 'item-pill'
+  const hNameMap: Record<string, string> = { npc: 'npc-pill', enemy: 'enemy-pill', item: 'item-pill', map: 'map-pill' }
+  node.data.hName = hNameMap[node.name]
   node.data.hProperties = { slug }
 }
 

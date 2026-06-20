@@ -5,6 +5,41 @@ Sessions are logged in reverse-chronological order (newest first).
 
 ---
 
+## 2026-06-20 — Map System (partial — overlay bug open)
+
+**Summary:** Built the grid-based mapping system end-to-end. Maps are authored in `world/maps/SLUG.md` with layered entities defined as blob-tile shapes across arbitrary grid cells. The SPA gained a Maps tab (`/maps`, `/maps/:slug`), zoom/pan canvas adapted from SpaceLab's `ShipEditorCanvas`, per-map position/zoom persistence via Zustand persist, and a `:map[slug]` inline directive pill. Entity shapes render correctly using the blob-tileset technique (adapted from `GridShapeView`). One open bug: clicking an entity shape does not open its overlay panel.
+
+### Key Changes
+
+- Copied `blob_tileset_module_web.png` from SpaceLab → `public/blob_tileset_terrain.png`
+- Created `src/rendering/blobTiles.ts` and `src/rendering/computeNeighborMask.ts` (ported from SpaceLab; Y-axis flipped to screen coords)
+- Created `src/types/map.ts` — `MapFile`, `MapLayer`, `MapEntity` (cells as `[x,y][]` pairs)
+- Created `src/data/maps.ts` — `import.meta.glob('/world/maps/*.md')` loader; exports `maps[]` and `mapMap`
+- Created `src/store/mapSlice.ts` — Zustand `persist` slice; per-map `{ offset, zoom }` saved to localStorage as `ttrpg-map-views`
+- Created `src/components/MapEntityShape.tsx` — `GridShapeView` adapted for maps: Y=0 at top, hex color input, no rotation/placement, `selected` prop drives `gentle-pulse` animation, `onClick` handler
+- Created `src/components/MapCanvas.tsx` — full zoom/pan canvas (wheel zoom, right-click drag, pointer-event touch including pinch); fit-to-viewport initial view when no saved view; layer toggles; entity overlay (fixed to viewport, `animate-slide-up`)
+- Created `src/components/MapView.tsx` — `MapListView` (`/maps`) and `MapDetailView` (`/maps/:slug`)
+- Created `world/maps/the-reaches.md` — sample map; 3 layers (terrain, fog, encounters); 7 entities using existing world slugs
+- Updated `src/App.tsx` — added `/maps` and `/maps/:slug` routes; Maps tab (4 tabs now); tab bar hidden on `/maps/:slug`; `lastMapsPath` tracking
+- Updated `src/lib/remarkGmBlocks.ts` — added `map` to inline directive handler → `map-pill` element
+- Updated `src/components/MarkdownBody.tsx` — added `MapPill` (teal, 🗺 icon, links to `/maps/:slug`); imports `mapMap`
+- Updated `src/data/locations.ts` — added `locationMap` export (needed by MapCanvas link resolver)
+- Updated `src/index.css` — added `@keyframes gentle-pulse` and `@keyframes slide-up` / `.animate-slide-up`
+- Updated `world/CLAUDE.md` — added Map frontmatter schema and `:map[slug]` reference example
+
+### Key Decisions
+
+- **Blob-tile entity shapes** (not just point markers): each entity defines `cells: [[x,y],...]`; neighbor mask computed from entity's own cells only; feColorMatrix colorizes the tileset to `entity.color`
+- **Y=0 at top** in `computeNeighborMask`: map uses screen coordinates; SpaceLab used bottom-up. Flipped N/S bit assignments.
+- **Zustand persist** for map view state: first use of persist middleware in this project; stored under `ttrpg-map-views` key
+- **Fit-to-viewport on first load**: when no saved view exists, `MapCanvas` computes zoom + offset to fit the full map in the viewport with 24px padding; computed in a `useEffect` on mount
+
+### Open Bug
+
+- **Entity click → overlay not opening**: verification confirmed 7 entity containers render correctly in viewport, click fires with no console errors, but `rounded-t-xl` overlay panel never appears. Suspected cause: `handleCanvasClick` (which calls `setSelectedEntity(null)`) may be firing after or instead of the entity's `onClick` despite `e.stopPropagation()`. Needs focused debugging session.
+
+---
+
 ## 2026-06-16 — Items as First-Class Entities + Print Queue
 
 **Summary:** Converted items from 4 aggregate markdown tables into 46 individual slug-able entity files following the NPC/Enemy pattern. Added an Items tab with browsing, filtering, and full detail pages. Built a print queue system analogous to the encounter queue — "Add to Print" stages items; `/print` renders a printable card grid via `window.print()`. Fixed a latent bug where inline `:npc[slug]`, `:enemy[slug]`, and `:item[slug]` directives never rendered as pills because `remark-directive` v4 uses `textDirective` (not `inlineDirective`) for inline syntax. Scrubbed all world markdown files to replace freehand item name mentions with `:item[slug]` directives.

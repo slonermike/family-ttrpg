@@ -200,6 +200,39 @@ Two :enemy[l2-corrupted-guard] flank the entrance.
 The party finds a :item[healing-potion] behind the barrel.
 ```
 
-Slugs match the filenames: `npc-jorik.md` → `jorik`; `enemy-l2-corrupted-guard.md` → `l2-corrupted-guard`; `boss-dorogh-stage1.md` → `dorogh-stage1`; `item-healing-potion.md` → `healing-potion`.
+**Map pill** — links to a map page:
+```
+See :map[the-reaches] for the full overworld layout.
+```
+
+Slugs match the filenames: `npc-jorik.md` → `jorik`; `enemy-l2-corrupted-guard.md` → `l2-corrupted-guard`; `boss-dorogh-stage1.md` → `dorogh-stage1`; `item-healing-potion.md` → `healing-potion`; `world/maps/the-reaches.md` → `the-reaches`.
 
 These work in any markdown field: `description`, `gm_notes`, NPC body text, region/location body text.
+
+---
+
+## Map Files (`world/maps/SLUG.md`)
+
+Maps live in `world/maps/`. Slug = filename minus `.md`. Referenceable as `:map[slug]` in any markdown.
+
+```yaml
+name: string
+width: number          # grid cells wide
+height: number         # grid cells tall
+cellSize: number       # optional; pixels per cell (default 48)
+layers:
+  - id: string         # unique within the map
+    name: string       # shown in layer toggle panel
+    visible: boolean   # optional; default true
+    entities:
+      - label: string
+        cells: [[x, y], ...]   # global grid coords; 0,0 = top-left
+        icon: string           # optional emoji overlaid at centroid
+        color: string          # optional hex (e.g. "#f59e0b"); tints the blob shape
+        link: string           # optional "type:slug" (location/npc/region/item/map)
+        content: string        # optional markdown shown in click overlay
+```
+
+Body text = map overview description (shown on the map list card).
+
+Entity `content` supports all markdown conventions: `[!NARRATION]`, `[!DIALOG]`, `:npc[]`, `:enemy[]`, `:item[]`, `:map[]`, `:::details[...]`.

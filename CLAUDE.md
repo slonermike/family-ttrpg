@@ -27,6 +27,9 @@ family-ttrpg/
 ├── framework.md               ← tone, Fruits of Spirit, Drachan, Deep Magic
 ├── mechanics.md               ← full rules
 ├── ability-reference.md       ← six abilities with use cases
+├── .claude/
+│   ├── todo.md               ← project TODO list; update when work is done or blocked
+│   └── dev-log.md            ← dev session log (newest first); add entry each session
 ├── docs/
 │   ├── design-principles.md  ← story rules, tone, NPC/enemy design
 │   ├── session-workflows.md  ← prep and debrief templates
@@ -37,7 +40,8 @@ family-ttrpg/
 │   ├── locations/            ← named places within a region; each has scenes[]
 │   ├── enemies/              ← generic/reusable enemies
 │   ├── npcs/                 ← transcendent NPCs (appear across locales)
-│   └── items/                ← consumables, weapons, legendaries, story items
+│   ├── items/                ← consumables, weapons, legendaries, story items
+│   └── maps/                 ← grid-based maps (SLUG.md); see world/CLAUDE.md for schema
 ├── src/
 │   └── CLAUDE.md             ← SPA architecture, data model, GM-first UX standard
 ├── printables/               ← PDFs; bootstrap input only; markdown is canon

@@ -8,9 +8,11 @@ import EnemyPage from './components/EnemyOverlay'
 import ItemsView from './components/ItemsView'
 import ItemPage from './components/ItemPage'
 import PrintView from './components/PrintView'
+import { MapListView, MapDetailView } from './components/MapView'
 
 // Module-level: remember last visited path within each section
 let lastWorldPath = '/world'
+let lastMapsPath = '/maps'
 let lastItemsPath = '/items'
 let lastMonstersPath = '/monsters'
 
@@ -20,10 +22,12 @@ function TabBar() {
   const fullPath = pathname + search
 
   if (pathname.startsWith('/world')) lastWorldPath = fullPath
+  if (pathname.startsWith('/maps')) lastMapsPath = fullPath
   if (pathname.startsWith('/items')) lastItemsPath = fullPath
   if (pathname.startsWith('/monsters')) lastMonstersPath = fullPath
 
   const isWorld = pathname.startsWith('/world') || pathname.startsWith('/npc')
+  const isMaps = pathname.startsWith('/maps')
   const isItems = pathname.startsWith('/items')
   const isMonsters = pathname.startsWith('/monsters')
 
@@ -36,6 +40,14 @@ function TabBar() {
         }`}
       >
         World
+      </button>
+      <button
+        onClick={() => navigate(lastMapsPath)}
+        className={`flex-1 py-3 text-sm font-medium transition-colors cursor-pointer ${
+          isMaps ? 'text-amber-400' : 'text-gray-500 hover:text-gray-300'
+        }`}
+      >
+        Maps
       </button>
       <button
         onClick={() => navigate(lastItemsPath)}
@@ -59,7 +71,7 @@ function TabBar() {
 
 export default function App() {
   const { pathname } = useLocation()
-  const hideTab = pathname === '/encounter' || pathname === '/print'
+  const hideTab = pathname === '/encounter' || pathname === '/print' || pathname.startsWith('/maps/')
 
   return (
     <div>
@@ -75,6 +87,8 @@ export default function App() {
         <Route path="/monsters" element={<MonsterManual />} />
         <Route path="/monsters/:slug" element={<EnemyPage />} />
         <Route path="/encounter" element={<EncounterView />} />
+        <Route path="/maps" element={<MapListView />} />
+        <Route path="/maps/:slug" element={<MapDetailView />} />
       </Routes>
       {!hideTab && <TabBar />}
     </div>

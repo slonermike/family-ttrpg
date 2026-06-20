@@ -19,3 +19,7 @@ export const locations: Location[] = Object.entries(modules)
     const bV = b.visited_session ?? 999
     return aV !== bV ? aV - bV : a.name.localeCompare(b.name)
   })
+
+export const locationMap: Record<string, Location> = Object.fromEntries(
+  locations.map(l => [l.slug, l])
+)
