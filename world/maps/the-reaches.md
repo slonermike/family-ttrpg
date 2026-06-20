@@ -39,6 +39,24 @@ layers:
         content: |
           The only neutral ground between Rjocht and the outlying villages. :npc[merra] runs the place and knows more than she lets on.
         cells: [[13, 16], [14, 16]]
+      - label: Darkened Ridge
+        icon: "⛰️"
+        color: "#475569"
+        link: "location:darkened-ridge"
+        content: |
+          A steep, cold ridge at the western edge of the Reaches. Harder to climb than it looks.
+
+          :npc[murn] waits at the top — a small blind creature whose friend never came back from the cave above.
+        cells: [[1, 11], [2, 11], [3, 11], [1, 12], [2, 12]]
+      - label: Cavern of Blackest Shadows
+        icon: "🕳️"
+        color: "#1e293b"
+        link: "location:cavern-of-blackest-shadows"
+        content: |
+          A cave above the Darkened Ridge. Pitch dark. Something large lives in the deep part — it can't see, but it can hear everything.
+
+          :npc[goob] is stranded inside. :enemy[boss-blind-anger] holds :item[illuminating-truth] without knowing it.
+        cells: [[1, 8], [2, 8], [1, 9]]
       - label: Carpe Diem Island
         icon: "🐟"
         color: "#38bdf8"

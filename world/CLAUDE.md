@@ -32,6 +32,7 @@ Enemy slugs are derived from filename: `enemy-l2-corrupted-guard.md` → `l2-cor
 
 ```yaml
 name: string
+pronunciation: string    # optional; phonetic guide e.g. "tzah-VESH"; shown near name in SPA
 tagline: string          # one sentence; how to present this region to a new GM
 scenes:                  # reusable regional scene library
   - name: string
@@ -54,6 +55,7 @@ Body text = region overview (becomes `description` field in TypeScript).
 
 ```yaml
 name: string
+pronunciation: string    # optional; phonetic guide e.g. "KAY-dreth"; shown near name in SPA
 type: string             # e.g. fortress-city, tavern, sacred-ground
 status: string           # e.g. occupied-by-Dorogh, visited, inaccessible-after-ceremony
 visited_session: number  # optional; session number first visited
@@ -82,6 +84,7 @@ NPCs are first-class world entities — not nested under locations. To move an N
 
 ```yaml
 name: string
+pronunciation: string    # optional; phonetic guide e.g. "MER-ah"
 tagline: string          # one sentence; how to use this NPC right now
 role: string
 location: string         # current location slug (e.g. rjocht, amber-hollow); update when NPC moves
