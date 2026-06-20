@@ -14,6 +14,7 @@ export const typeStyle: Record<string, string> = {
   armor: 'bg-slate-800 border border-slate-600 text-slate-300',
   legendary: 'bg-purple-950 border border-purple-700 text-purple-300',
   story: 'bg-emerald-950 border border-emerald-700 text-emerald-300',
+  'tool-of-justice': 'bg-amber-950 border border-amber-600 text-amber-300',
 }
 
 export const typeLabel: Record<string, string> = {
@@ -22,6 +23,7 @@ export const typeLabel: Record<string, string> = {
   armor: 'ARMOR',
   legendary: 'LEGENDARY',
   story: 'STORY',
+  'tool-of-justice': 'TOOL OF JUSTICE',
 }
 
 function highlight(text: string, query: string): ReactNode {

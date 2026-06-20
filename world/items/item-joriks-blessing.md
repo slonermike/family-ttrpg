@@ -2,7 +2,7 @@
 name: Jorik's Blessing
 type: story
 tagline: Jorik's personal maker token — his mark pressed into iron.
-effect: Establish trust with anyone who knew Jorik or his work. Lisel recognizes it on sight.
+effect: Establish trust with anyone who knew Jorik or his work.
 consumable: false
 ---
 

@@ -4,7 +4,7 @@ const modules = import.meta.glob<{ default: Enemy }>('/world/enemies/*.md', { ea
 
 function slugFromPath(path: string): string {
   const filename = path.split('/').pop() ?? ''
-  return filename.replace(/^enemy-/, '').replace(/^boss-/, '').replace(/\.md$/, '')
+  return filename.replace(/^enemy-/, '').replace(/\.md$/, '')
 }
 
 export const enemies: Enemy[] = Object.entries(modules).map(([path, mod]) => ({

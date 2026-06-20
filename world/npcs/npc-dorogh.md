@@ -2,8 +2,8 @@
 name: Dorogh
 type: boss
 location: rjocht/dorogh-keep
-unique_items: ["Corrupted Greatsword"]
-loot_drop: "Automatic — each player draws 1 Legendary after victory"
+unique_items: ["Corrupted Greatsword", "Keystone of Provision"]
+loot_drop: "Automatic — whoever delivers the final blow receives the Keystone of Provision; remaining players each draw 1 Legendary"
 ---
 
 One of Drachan's generals. Holds Rjocht in fear and cruelty. Kept Constance alive as a warning to the people. Never seen outside the fortress keep — his presence presses down like a physical weight.

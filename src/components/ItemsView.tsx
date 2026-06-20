@@ -5,12 +5,13 @@ import { usePrintStore, selectPrintCount } from '../store/printSlice'
 import type { Item } from '../types/item'
 import ItemCard from './ItemCard'
 
-type FilterType = 'all' | 'consumable' | 'weapon' | 'armor' | 'legendary' | 'story'
+type FilterType = 'all' | 'consumable' | 'weapon' | 'armor' | 'legendary' | 'story' | 'tool-of-justice'
 
-const TYPE_ORDER: FilterType[] = ['consumable', 'weapon', 'armor', 'legendary', 'story']
+const TYPE_ORDER: FilterType[] = ['tool-of-justice', 'consumable', 'weapon', 'armor', 'legendary', 'story']
 
 const TYPE_LABELS: Record<FilterType, string> = {
   all: 'All',
+  'tool-of-justice': 'Tools of Justice',
   consumable: 'Consumable',
   weapon: 'Weapon',
   armor: 'Armor',

@@ -114,6 +114,8 @@ scenes:
 
       > [!NARRATION]
       > The breathing changes. Slower. Then it stands.
+
+      :enemy[boss-blind-anger]
     gm_notes: |-
       This is the Blind Anger encounter. See :enemy[boss-blind-anger] for full stats and mechanics.
 

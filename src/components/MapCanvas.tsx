@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import type { MapFile, MapEntity } from '../types/map'
 import { useMapStore } from '../store/mapSlice'
 import { locationMap } from '../data/locations'
 import { MapEntityShape } from './MapEntityShape'
 import MarkdownBody from './MarkdownBody'
+import { buildEntityGrid, screenToCell } from '../lib/mapGrid'
 
 const ZOOM_SPEED = 0.001
 const MIN_ZOOM = 0.15
@@ -53,7 +54,6 @@ export function MapCanvas({ map }: MapCanvasProps) {
   const { views, setView } = useMapStore()
   const hasSavedView = map.slug in views
 
-  // When no saved view, compute fit-to-viewport on first render using a ref sentinel
   const initialViewComputed = useRef(false)
   const offsetRef = useRef(views[map.slug]?.offset ?? { x: 0, y: 0 })
   const zoomRef = useRef(views[map.slug]?.zoom ?? 1)
@@ -64,11 +64,33 @@ export function MapCanvas({ map }: MapCanvasProps) {
     Object.fromEntries(map.layers.map(l => [l.id, l.visible !== false]))
   )
   const [selectedEntity, setSelectedEntity] = useState<MapEntity | null>(null)
+  const [hoveredEntity, setHoveredEntity] = useState<MapEntity | null>(null)
 
   const canvasRef = useRef<HTMLDivElement>(null)
   const drag = useRef<{ startX: number; startY: number; startOffset: { x: number; y: number }; moved: boolean } | null>(null)
   const pointers = useRef<Map<number, { x: number; y: number }>>(new Map())
   const lastPinchDist = useRef<number | null>(null)
+
+  // O(1) cell → entity lookup, rebuilt only when visible layers change
+  const visibleLayerIds = useMemo(
+    () => new Set(Object.entries(layerVisibility).filter(([, v]) => v).map(([id]) => id)),
+    [layerVisibility]
+  )
+  const entityGrid = useMemo(
+    () => buildEntityGrid(map, visibleLayerIds),
+    [map, visibleLayerIds]
+  )
+
+  const entityAtEvent = useCallback(
+    (clientX: number, clientY: number): MapEntity | null => {
+      const canvas = canvasRef.current
+      if (!canvas) return null
+      const rect = canvas.getBoundingClientRect()
+      const cell = screenToCell(clientX, clientY, rect, offsetRef.current, zoomRef.current, cellSize)
+      return entityGrid.get(`${cell.x},${cell.y}`) ?? null
+    },
+    [entityGrid, cellSize]
+  )
 
   // Compute fit-to-viewport initial view if no saved view exists
   useEffect(() => {
@@ -91,7 +113,7 @@ export function MapCanvas({ map }: MapCanvasProps) {
     rerender()
   }, [hasSavedView, map.width, map.height, cellSize, rerender])
 
-  // Persist view on unmount and on change
+  // Persist view on unmount
   useEffect(() => {
     return () => {
       setView(map.slug, { offset: offsetRef.current, zoom: zoomRef.current })
@@ -101,7 +123,6 @@ export function MapCanvas({ map }: MapCanvasProps) {
   useEffect(() => {
     const el = canvasRef.current
     if (!el) return
-
     const onWheel = (e: WheelEvent) => {
       e.preventDefault()
       const oldZoom = zoomRef.current
@@ -121,23 +142,25 @@ export function MapCanvas({ map }: MapCanvasProps) {
   }, [map.slug, setView, rerender])
 
   const handlePointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    // Right-click or two-finger touch → pan/zoom
-    if (e.button === 2 || e.pointerType === 'touch') {
-      e.currentTarget.setPointerCapture(e.pointerId)
-      pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
-      if (pointers.current.size === 1) {
-        drag.current = {
-          startX: e.clientX,
-          startY: e.clientY,
-          startOffset: { ...offsetRef.current },
-          moved: false,
-        }
-        lastPinchDist.current = null
+    e.currentTarget.setPointerCapture(e.pointerId)
+    pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
+    if (pointers.current.size === 1) {
+      drag.current = {
+        startX: e.clientX,
+        startY: e.clientY,
+        startOffset: { ...offsetRef.current },
+        moved: false,
       }
+      lastPinchDist.current = null
     }
   }, [])
 
   const handlePointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    // Update hover highlight via grid lookup (skip for touch)
+    if (e.pointerType !== 'touch') {
+      setHoveredEntity(entityAtEvent(e.clientX, e.clientY))
+    }
+
     if (!pointers.current.has(e.pointerId)) return
     pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
 
@@ -177,7 +200,7 @@ export function MapCanvas({ map }: MapCanvasProps) {
       setView(map.slug, { offset: offsetRef.current, zoom: zoomRef.current })
       rerender()
     }
-  }, [map.slug, setView, rerender])
+  }, [entityAtEvent, map.slug, setView, rerender])
 
   const handlePointerUp = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     pointers.current.delete(e.pointerId)
@@ -187,10 +210,15 @@ export function MapCanvas({ map }: MapCanvasProps) {
     }
   }, [])
 
-  const handleCanvasClick = useCallback(() => {
+  const handlePointerLeave = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    handlePointerUp(e)
+    setHoveredEntity(null)
+  }, [handlePointerUp])
+
+  const handleCanvasClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (drag.current?.moved) return
-    setSelectedEntity(null)
-  }, [])
+    setSelectedEntity(entityAtEvent(e.clientX, e.clientY))
+  }, [entityAtEvent])
 
   const offset = offsetRef.current
   const zoom = zoomRef.current
@@ -209,11 +237,12 @@ export function MapCanvas({ map }: MapCanvasProps) {
           backgroundSize: `${cellSize * zoom}px ${cellSize * zoom}px`,
           backgroundPosition: `${offset.x}px ${offset.y}px`,
           touchAction: 'none',
+          cursor: hoveredEntity ? 'pointer' : 'default',
         }}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
-        onPointerLeave={handlePointerUp}
+        onPointerLeave={handlePointerLeave}
         onContextMenu={(e) => e.preventDefault()}
         onClick={handleCanvasClick}
       >
@@ -227,12 +256,11 @@ export function MapCanvas({ map }: MapCanvasProps) {
             transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
             width: map.width * cellSize,
             height: map.height * cellSize,
+            pointerEvents: 'none',
           }}
         >
           {/* Map border */}
-          <div
-            className="absolute inset-0 border border-gray-700 pointer-events-none"
-          />
+          <div className="absolute inset-0 border border-gray-700 pointer-events-none" />
 
           {/* Layers */}
           {map.layers.map((layer) => {
@@ -245,14 +273,14 @@ export function MapCanvas({ map }: MapCanvasProps) {
                     entity={entity}
                     cellSize={cellSize}
                     selected={selectedEntity === entity}
-                    onClick={() => setSelectedEntity(entity)}
+                    hovered={hoveredEntity === entity}
                   />
                 ))}
               </div>
             )
           })}
 
-          {/* Icon overlays — pointer-events: none so they don't block entity clicks */}
+          {/* Icon overlays */}
           {map.layers.map((layer) => {
             if (!layerVisibility[layer.id]) return null
             return layer.entities.map((entity, i) => {
@@ -264,7 +292,7 @@ export function MapCanvas({ map }: MapCanvasProps) {
               return (
                 <div
                   key={`icon-${layer.id}-${i}`}
-                  className="absolute pointer-events-none flex items-center justify-center"
+                  className="absolute flex items-center justify-center"
                   style={{
                     left: cx - cellSize * 0.4,
                     top: cy - cellSize * 0.4,
@@ -282,7 +310,7 @@ export function MapCanvas({ map }: MapCanvasProps) {
         </div>
       </div>
 
-      {/* Layer toggle panel — fixed top-right, outside transform */}
+      {/* Layer toggle panel */}
       <div className="absolute top-3 right-3 z-10 bg-gray-900/90 border border-gray-700 rounded-lg p-2 flex flex-col gap-1 min-w-[120px]">
         <p className="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1 px-1">Layers</p>
         {map.layers.map((layer) => (
@@ -300,7 +328,7 @@ export function MapCanvas({ map }: MapCanvasProps) {
         ))}
       </div>
 
-      {/* Entity overlay — fixed to viewport, slides up from bottom */}
+      {/* Entity overlay */}
       {selectedEntity && (
         <>
           {/* Backdrop tap-to-close */}

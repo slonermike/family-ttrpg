@@ -19,14 +19,13 @@ interface MapEntityShapeProps {
   entity: MapEntity
   cellSize: number
   selected: boolean
-  onClick: () => void
+  hovered: boolean
 }
 
-export function MapEntityShape({ entity, cellSize, selected, onClick }: MapEntityShapeProps) {
+export function MapEntityShape({ entity, cellSize, selected, hovered }: MapEntityShapeProps) {
   const scale = cellSize / BLOB_TILE_PX
   const atlasPx = BLOB_ATLAS_COLS * BLOB_TILE_PX * scale
 
-  // Normalize cells to local coords (entity container starts at min x/y)
   const minX = Math.min(...entity.cells.map(([x]) => x))
   const minY = Math.min(...entity.cells.map(([, y]) => y))
   const localCells = entity.cells.map(([x, y]) => ({ x: x - minX, y: y - minY }))
@@ -53,10 +52,10 @@ export function MapEntityShape({ entity, cellSize, selected, onClick }: MapEntit
         top: minY * cellSize,
         width: width * cellSize,
         height: height * cellSize,
-        cursor: 'pointer',
+        opacity: hovered && !selected ? 0.75 : 1,
         animation: selected ? 'gentle-pulse 2s ease-in-out infinite' : undefined,
+        pointerEvents: 'none',
       }}
-      onClick={(e) => { e.stopPropagation(); onClick() }}
     >
       <svg width={0} height={0} style={{ position: 'absolute' }}>
         <defs>

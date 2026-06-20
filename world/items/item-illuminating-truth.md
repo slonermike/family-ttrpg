@@ -1,6 +1,6 @@
 ---
 name: Illuminating Truth
-type: legendary
+type: tool-of-justice
 tagline: A small locket containing a flame that doesn't need air, light, or permission to burn.
 effect: "Once per battle: identify one weakness of any enemy. GM names the weakness on the spot if none is specified. The weakness applies for the rest of that battle."
 consumable: false
@@ -14,4 +14,4 @@ It was inside Blind Anger when the party found him. He carried it for a very lon
 
 **The light:** The locket's flame is not suppressed by Blind Anger's presence the way a torch is. In his chamber, it's the only light that reaches more than five feet. Once retrieved, the holder can see clearly in a ten-foot radius regardless of supernatural darkness.
 
-This is one of the Tools of Justice. The others: :item[blade-of-righteous-judgment].
+This is one of the Tools of Justice. The others: :item[blade-of-righteous-judgment], :item[keystone-of-provision].
