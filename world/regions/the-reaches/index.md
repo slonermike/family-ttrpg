@@ -82,7 +82,7 @@ scenes:
     description: |-
       The road dips to a shallow stream — knee-deep, smooth stones on the bottom. Easy crossing, normally.
 
-      In the middle stands a woman. From the waist up she might be ordinary, except for the head: a carp's head, round and goggle-eyed, scales catching the light green and gold. Below the waist: Barbie legs, perfectly plastic pink, tiny pointed feet planted in the streambed.
+      In the middle stands a figure. From the waist up: entirely carp — round goggle eyes, green-gold scales, fins, the whole fish. Below the waist: plastic legs, perfectly pink, knees that don't bend, tiny pointed feet planted in the streambed.
 
       She hasn't moved. She's watching you with enormous fish eyes.
 
